@@ -2,10 +2,6 @@
 
 Board- 2D Array
 
-Since all pieces have the same action (move, etc)....should there be an interface??
-All pieces have the same fields, actions (name, move, etc)... make all pieces a subclass of a class. Abstract superclass?
-Difference between interface and abstract class?
-
 Pieces
 	Fields
 		Type?
@@ -16,17 +12,10 @@ Pieces
 			-invalid move
 		capture
 		
+Queen subclass of either Rook or Bishop?
+
 Pawn
 	-Promote
 	
 Check/Checkmate
 	-How to check/which class should it be in? King?
-	
-Inputs
-	start.txt end.txt
-	a2 a3
-		-moves a pawn forward 
-		
-Board
-	Main method or a class?
-		
