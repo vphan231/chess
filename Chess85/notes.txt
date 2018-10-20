@@ -1,6 +1,7 @@
 
 
 Board- 2D Array
+	print board method
 
 Pieces
 	Fields
