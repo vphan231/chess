@@ -1,9 +1,27 @@
 
 
+Board- 2D Array
+
 Since all pieces have the same action (move, etc)....should there be an interface??
 All pieces have the same fields, actions (name, move, etc)... make all pieces a subclass of a class. Abstract superclass?
 Difference between interface and abstract class?
 
+Pieces
+	Fields
+		Type?
+		White or Black
+		name? ex. wK bK
+	Methods
+		move
+			-invalid move
+		capture
+		
+Pawn
+	-Promote
+	
+Check/Checkmate
+	-How to check/which class should it be in? King?
+	
 Inputs
 	start.txt end.txt
 	a2 a3

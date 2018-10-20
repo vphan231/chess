@@ -13,8 +13,8 @@ public class Chess {
 		System.out.println("Input move files (file1 file2): ");
 		String input = sc.nextLine();
 		sc.close();
-		//System.out.println( input.substring(0, input.indexOf(' ')));
-		//System.out.println(input.substring(input.indexOf(' ')+1));
+		
+		//Do we need to check for invalid input? - invalid format, file not found
 		Scanner file1 = new Scanner( new File (input.substring(0, input.indexOf(' '))));
 		Scanner file2 = new Scanner( new File( input.substring(input.indexOf(' ')+1)));
 		
