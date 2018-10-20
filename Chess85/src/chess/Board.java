@@ -31,7 +31,7 @@ public class Board {
 		for( int i = 0; i < 8; i++ ) {
 			for( int k = 0; k < 8; k++ ) {
 				if( board[i][k].piece != null ) {
-					board[i][k].piece.toString();
+					System.out.println(board[i][k].piece.name);
 					System.out.print(" ");
 				}else {
 					if( i % 2 == 0 ) {
@@ -83,7 +83,7 @@ public class Board {
 		cBoard[0][6] = temp;
 		
 		Piece bB1 = new Bishop(false,"bB");
-		temp = fill(true, bB1)
+		temp = fill(true, bB1);
 		cBoard[0][2] = temp;
 		
 		Piece bB2 = new Bishop(false,"bB");
