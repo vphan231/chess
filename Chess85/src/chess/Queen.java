@@ -1,6 +1,8 @@
 package chess;
 
 public class Queen {
-	int update;
-
+	public Queen(boolean color, String name) {
+		this.color = color;
+		this.name = name;
+	}
 }

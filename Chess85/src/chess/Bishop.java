@@ -1,6 +1,8 @@
 package chess;
 
 public class Bishop {
-	int i;
-	int j;
+	public Bishop(boolean color, String name) {
+		this.color = color;
+		this.name = name;
+	}
 }
