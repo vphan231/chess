@@ -6,13 +6,16 @@ public class Chess {
 	public static void main(String[] args) {
 		Board b = new Board();
 		b.initialize();
-		start(b);
+		b.print();
+		//start(b);
 	}
-
+	
+	/*
 	public static void start( Board board ) {
 		
 		
 	}
+	*/
 	
 	public static int[] convert( String rcStr ) {
 		int[] rc = new int[2];
@@ -30,14 +33,14 @@ public class Chess {
 			case '1': rc[0] = 7; break;
 		}
 		switch(col) {
-			case 'A': rc[1] = 0; break;
-			case 'B': rc[1] = 1; break;
-			case 'C': rc[1] = 2; break;
-			case 'D': rc[1] = 3; break;
-			case 'E': rc[1] = 4; break;
-			case 'F': rc[1] = 5; break;
-			case 'G': rc[1] = 6; break;
-			case 'H': rc[1] = 7; break;
+			case 'a': rc[1] = 0; break;
+			case 'b': rc[1] = 1; break;
+			case 'c': rc[1] = 2; break;
+			case 'd': rc[1] = 3; break;
+			case 'e': rc[1] = 4; break;
+			case 'f': rc[1] = 5; break;
+			case 'g': rc[1] = 6; break;
+			case 'h': rc[1] = 7; break;
 		}
 		
 		return rc;
