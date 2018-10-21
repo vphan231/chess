@@ -7,7 +7,7 @@ public class King extends Piece {
 	}
 	
 	boolean validMove(int x1, int x2, int y1, int y2) {
-		//move up 1
+		//move up 1.
 		if(x1 == x2 || y2 == y1+1) {
 			return true;
 		}

@@ -7,7 +7,7 @@ public class Queen extends Piece{
 	}
 	
 	boolean validMove(int x1, int x2, int y1, int y2) {
-		//if movement is diagonal, horizontal, or vertical
+		//if movement is diagonal, horizontal, or vertical.
 		if((x1 - y1) == (x2 - y2) || (x1 + y1) == (x2 + y2) || (x1 == x2) || (y1 == y2)) {
 			return true;
 		}
