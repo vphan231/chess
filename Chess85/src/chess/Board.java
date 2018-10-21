@@ -3,25 +3,66 @@ package chess;
 
 public class Board {
 
-	public BP[][] board;
+	public Piece[][] board;
 	
 	public Board() {
-		this.board = new BP[8][8];
+		this.board = new Piece[8][8];
 	}
 	
 	//returns true if path is open, false if path is clear
 	public boolean pathH( int r1, int c1, int r2, int c2 ) {
+		//row remains the same, move along col
 		boolean clear = true;
+		int lower = c2; int higher = c1;
+		if( c1 <= c2 ) {
+			lower = c1;	higher = c2;
+		}
 		
-		
+		for( int i = lower+1; i < higher-1; i++) {
+			if(board[r1][i]!= null) {
+				clear = false;
+			}
+		}
 		return clear;
 	}
 	public boolean pathV( int r1, int c1, int r2, int c2 ) {
+		//move along row, col remains the same
 		boolean clear = true;
+		int lower = r2; int higher = r1;
+		if( r1 <= r2 ) {
+			lower = r1;	higher = r2;
+		}
+		for( int i = lower+1; i < higher-1; i++) {
+			if(board[i][c1]!= null) {
+				clear = false;
+			}
+		}
 		return clear;
 	}
+	
 	public boolean pathD( int r1, int c1, int r2, int c2 ) {
 		boolean clear = true;
+		int lowerR = r2; int higherR = r1;
+		int lowerC = c2; int higherC = c1;
+		if( r1 < r2 ) {
+			lowerR = r1; higherR = r2;
+			lowerC = c1; higherC = c2;
+		}
+		boolean goingRight = true; // \
+		if ( lowerC < higherC ) {
+			goingRight = false; // /
+		}
+		int k = 0;
+		for( int i = lowerR+1; i < (higherR-lowerR)-1 ; i++ ) {
+			if( goingRight == true ) {
+				if( board[i][lowerC+k] != null ) { clear = false; }
+			}else {
+				if( board[i][lowerC-k] != null ) { clear = false; }
+			}
+			k++;
+		}
+		
+		
 		return clear;
 	}
 
@@ -31,7 +72,7 @@ public class Board {
 		for( int i = 0; i < 8; i++ ) {
 			for( int k = 0; k < 8; k++ ) {
 				if( board[i][k] != null ) {
-					System.out.print(board[i][k].piece.name);
+					System.out.print(board[i][k].name);
 					System.out.print(" ");
 				}else {
 					if( i % 2 == 0 ) {
@@ -53,7 +94,7 @@ public class Board {
 			System.out.println(colDis);
 			colDis--;
 		}
-		System.out.println("  a  b  c  d  e  f  g  h");
+		System.out.println(" a  b  c  d  e  f  g  h");
 	}
 	
 	public boolean move() {
@@ -61,95 +102,32 @@ public class Board {
 	}
 
 	public void initialize() {
-		//black == false
-		//white == true
-		//BP[][] cBoard = new BP[8][8];
-		
+		//black == false; white == true
 		//create black pieces
-		Piece bR1 = new Rook(false,"bR"); // (color, name)
-		BP temp = fill(true, bR1); //(occupy, piece)
-		board[0][0] = temp;
-		
-		Piece bR2 = new Rook(false,"bR");
-		temp = fill(true, bR2);
-		board[0][7] = temp;
-		
-		Piece bN1 = new Knight(false,"bN");
-		temp = fill(true, bN1);
-		board[0][1] = temp;
-		
-		Piece bN2 = new Knight(false,"bN");
-		temp = fill(true, bN2);
-		board[0][6] = temp;
-		
-		Piece bB1 = new Bishop(false,"bB");
-		temp = fill(true, bB1);
-		board[0][2] = temp;
-		
-		Piece bB2 = new Bishop(false,"bB");
-		temp = fill(true, bB2);
-		board[0][5] = temp;
-		
-		Piece bQ = new Queen(false,"bQ");
-		temp = fill(true, bQ);
-		board[0][3] = temp;
-		
-		Piece bK = new King(false,"bK");
-		temp = fill(true, bK);
-		board[0][4] = temp;
-		
+		board[0][0] = new Rook(false,"bR"); //color, name
+		board[0][7] = new Rook(false,"bR");
+		board[0][1] = new Knight(false,"bN");
+		board[0][6] = new Knight(false,"bN");
+		board[0][2] = new Bishop(false,"bB");
+		board[0][5] = new Bishop(false,"bB");
+		board[0][3] = new Queen(false,"bQ");
+		board[0][4] = new King(false,"bK");	
 		for(int i = 0; i<8 ; i++) {
-			Piece bP1 = new Pawn(false,"bp");
-			temp = fill(true, bP1);
-			board[1][i] = temp;
+			board[1][i] = new Pawn(false,"bp");
 		}
-		
 		//create white pieces
-		Piece wR1 = new Rook(false,"wR"); // (color, name)
-		temp = fill(true, wR1); //(occupy, piece)
-		board[7][0] = temp;
-		
-		Piece wR2 = new Rook(false,"wR");
-		temp = fill(true, wR2);
-		board[7][7] = temp;
-		
-		Piece wN1 = new Knight(false,"wN");
-		temp = fill(true, wN1);
-		board[7][1] = temp;
-		
-		Piece wN2 = new Knight(false,"wN");
-		temp = fill(true, wN2);
-		board[7][6] = temp;
-		
-		Piece wB1 = new Bishop(false,"wB");
-		temp = fill(true, wB1);
-		board[7][2] = temp;
-		
-		Piece wB2 = new Bishop(false,"wB");
-		temp = fill(true, wB2);
-		board[7][5] = temp;
-		
-		Piece wQ = new Queen(false,"wQ");
-		temp = fill(true, wQ);
-		board[7][3] = temp;
-		
-		Piece wK = new King(false,"wK");
-		temp = fill(true, wK);
-		board[7][4] = temp;
-		
+		board[7][0] = new Rook(true,"wR"); //color, name
+		board[7][7] = new Rook(true,"wR");
+		board[7][1] = new Knight(true,"wN");
+		board[7][6] = new Knight(true,"wN");
+		board[7][2] = new Bishop(true,"wB");
+		board[7][5] = new Bishop(true,"wB");
+		board[7][3] = new Queen(true,"wQ");
+		board[7][4] = new King(true,"wK");
 		for(int i = 0; i<8 ; i++) {
-			Piece wP1 = new Pawn(false,"wp");
-			temp = fill(true, wP1);
-			board[6][i] = temp;
+			board[6][i] = new Pawn(true,"wp");
 		}
 		return;
 
-	}
-	
-	public BP fill(boolean oc, Piece x) {
-		BP output = new BP();
-		output.piece = x;
-		output.oc = oc;
-		return output;
 	}
 }

@@ -1,22 +1,58 @@
-
-
-Board- 2D Array
-	print board method
-
-Pieces
-	Fields
-		Type?
-		White or Black
-		name? ex. wK bK
-	Methods
-		move
-			-invalid move
-		capture
-		
-Queen subclass of either Rook or Bishop?
-
-Pawn
-	-Promote
+Valid move
+	King
+	Knight C 10/21 Done, haven't tested
+	Pawn
+	Queen
+	Rook
+	Bishop
 	
-Check/Checkmate
-	-How to check/which class should it be in? King?
+Board
+	Deleted BP class
+	Paths: 10/21 All done but haven't tested
+		pathH C X 
+		pathV C X
+		pathD C X
+		move
+----------------------------------------------------
+Chess
+	Start
+	
+Chess Start
+	Get input 
+		g7 g8 Q
+		g7 g8
+		Resign
+		g7 g8 draw?
+		draw
+		check if input is resign or draw 
+		StringUtils
+	validMove
+	checkPath
+	move
+	check if move puts own king in check
+		if check - undo
+	set origin to null
+	use pathchecks
+		-for knight, use knight's validMove
+	if check
+		find all the spaces the king can move
+		if king cant move anywhere
+			checkmate
+			
+Castling
+
+Capture
+	Enpassant
+	
+Check if diagonal
+	x1-y1 = x2-y2
+	x1+y1 = x2+y2
+	
+Check if L shape
+	if( x||y == -2||2 ){
+		if other var == -1||1
+		then L shape
+	}
+	
+	
+Stalemate-xtra credit
