@@ -1,23 +1,30 @@
-Move
+Valid move
 	King
-	Knight
+	Knight C 10/21 Done, haven't tested
 	Pawn
 	Queen
 	Rook
 	Bishop
 	
 Board
-	pathH
-	pathV
-	pathD
-	
+	Deleted BP class
+	Paths: 10/21 All done but haven't tested
+		pathH C X 
+		pathV C X
+		pathD C X
+		move
+----------------------------------------------------
 Chess
 	Start
 	
 Chess Start
-	Get input
+	Get input 
 		g7 g8 Q
-		check if input is resign or draw
+		g7 g8
+		Resign
+		g7 g8 draw?
+		draw
+		check if input is resign or draw 
 		StringUtils
 	validMove
 	checkPath
@@ -40,3 +47,12 @@ Capture
 Check if diagonal
 	x1-y1 = x2-y2
 	x1+y1 = x2+y2
+	
+Check if L shape
+	if( x||y == -2||2 ){
+		if other var == -1||1
+		then L shape
+	}
+	
+	
+Stalemate-xtra credit
