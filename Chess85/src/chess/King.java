@@ -35,7 +35,7 @@ public class King extends Piece {
 		else if(x2 == x1-1 && y2 == y1-1) {
 			return true;
 		}
-		//move diagonal down right
+		//move diagonal down right.
 		else if(x2 == x1+1 && y2 == y1-1) {
 			return true;
 		}
