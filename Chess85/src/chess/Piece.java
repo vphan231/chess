@@ -6,11 +6,11 @@ public abstract class Piece {
 	boolean color;
 	String name;
 	
-	
 	//Fields
 	//Boolean Color
 	//String Name
 	//Methods
-	//boolean Move( x1, x2, y1, y3 );??
+	abstract boolean validMove(int x1,int x2,int y1,int y2);
+	
 }
 
