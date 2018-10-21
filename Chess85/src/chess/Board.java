@@ -12,8 +12,6 @@ public class Board {
 	//returns true if path is open, false if path is clear
 	public boolean pathH( int r1, int c1, int r2, int c2 ) {
 		boolean clear = true;
-		
-		
 		return clear;
 	}
 	public boolean pathV( int r1, int c1, int r2, int c2 ) {
@@ -53,7 +51,7 @@ public class Board {
 			System.out.println(colDis);
 			colDis--;
 		}
-		System.out.println("  a  b  c  d  e  f  g  h");
+		System.out.println(" a  b  c  d  e  f  g  h");
 	}
 	
 	public boolean move() {
