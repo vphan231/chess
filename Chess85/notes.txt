@@ -1,18 +1,48 @@
+Stuff that still needs to be done
+	Chess/start
+		Input cases
+			g7 g8
+			g7 g8 Q
+			Resign
+			g7 g8 Draw?
+			draw	
+		Bunch of other stuff
+	Board
+		promote method
+		Need special valid move checks
+			check if move puts own king in check 
+				-(this method can also be used to check valid moves for a king that is in check)
+			enpassant
+			castling
+	Somewhere
+		Checkmate check
+		
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+10/21 Updates - C
+	Board 
+		(new method) valid - checks all valid checks - Basics done, still need special cases
+		move - did basic move piece and capture, still need special cass
+		(new method) promote - method to promote a pawn
+		 
+	Piece Classes
+		(new field) Char type - for less typing purposes
+		
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+10/20
 Valid move
-	King
-	Knight C 10/21 Done, haven't tested
-	Pawn
-	Queen
-	Rook
-	Bishop
+	X King 
+	X Knight C
+	X Pawn 
+	X Queen
+	X Rook 
+	X Bishop 
 	
-Board
+Board 
 	Deleted BP class
-	Paths: 10/21 All done but haven't tested
-		pathH C X 
-		pathV C X
-		pathD C X
-		move
+	Paths: 
+		pathH C 
+		pathV C 
+		pathD C 
 ----------------------------------------------------
 Chess
 	Start
@@ -55,4 +85,4 @@ Check if L shape
 	}
 	
 	
-Stalemate-xtra credit
+Stalemate- extra credit

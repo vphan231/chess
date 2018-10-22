@@ -41,6 +41,7 @@ public class Chess {
 		}
 	}
 	
+
 	
 	public static int[] convertArr( String moveStr ) {
 		int[] coords = new int[4];
@@ -50,6 +51,7 @@ public class Chess {
 		coords[3] = convert( moveStr.charAt(6) );
 		return coords;
 	}
+	
 	public static int convert( char c ) {
 		switch(c) {
 			case '8': return 0; case 'a': return 0;

@@ -1,12 +1,14 @@
 package chess;
 
 public class Pawn extends Piece{
+	char type = 'P';
+	
 	public Pawn(boolean color, String name) {
 		this.color = color;
 		this.name = name;
 	}
 	
-	boolean validMove(int x1, int x2, int y1, int y2) {
+	boolean validMove(int x1, int y1, int x2, int y2) {
 		//if pawn havn't move yet: can move 2 spaces, 1 space, or 1 space diagonal to kill.
 		if(!moveYet(x1)) {
 			if(x1 == x2 && y2 == y1+2) {

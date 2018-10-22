@@ -2,7 +2,7 @@ package chess;
 
 public abstract class Piece {
 	
-
+	char type;
 	boolean color;
 	String name;
 	
@@ -10,7 +10,7 @@ public abstract class Piece {
 	//Boolean Color
 	//String Name
 	//Methods
-	abstract boolean validMove(int x1,int x2,int y1,int y2);
+	abstract boolean validMove(int x1,int y1,int x2,int y2);
 	
 }
 
