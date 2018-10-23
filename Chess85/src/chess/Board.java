@@ -178,7 +178,7 @@ public class Board {
 		
 		return true;
 	}
-	
+
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
 		//checks if c is a valid piece to promote to
@@ -191,9 +191,11 @@ public class Board {
 	}
 	
 	public boolean check( int x1, int y1, int x2, int y2 ) {
+		//check if move puts own king in check
 		return true; //placeholder
 	}
 	public boolean checkmate() {
+		//checks if either king is in checkmate
 		return true; //placeholder
 	}
 	

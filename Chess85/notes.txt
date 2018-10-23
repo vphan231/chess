@@ -5,8 +5,11 @@ Stuff that still needs to be done
 		
 	Board.java
 		(new method) validPromote
-		(new method) check //checks if move puts own king is in check
+		(new method) check //checks if move puts own king in check
 		(new method) checkmate //checks if either king is in checkmate
+			-maybe have a 
+				int[] findKing( boolean color ) { return int[2] arr; //king at x=arr[0], y=arr[1]  }
+			method to make the 2 methods above easier
 		Need special valid move checks
 			enpassant
 			castling
