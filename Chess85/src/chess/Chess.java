@@ -26,17 +26,18 @@ public class Chess {
 		while( gameEnded == false ){
 			
 			if( badInput == false ) { //dont reprint if bad input == true
-				if( wTurn ) {
-					System.out.println("White's turn: ");
-				}else {					
-					System.out.println("Black's turn: ");
-				}
+				b.print();
+			}
+			if( wTurn ) {
+				System.out.println("White's turn: ");
+			}else {					
+				System.out.println("Black's turn: ");
 			}
 			input = sc.nextLine();
 			
 			badInput = validInput( b, input);
 			if( badInput == true ) {
-				System.out.println("Invalid move, try again:");
+				System.out.println("Illegal move, try again:");
 				//don't run anything else in this loop iteration (is that continue or break?)
 			}
 		
@@ -71,6 +72,7 @@ public class Chess {
 			}
 		
 			if( b.checkmate() == true ) { 
+				System.out.println("Checkmate");
 				gameEnded = true;
 				if( wTurn ) {
 					System.out.println("White wins");
@@ -78,6 +80,10 @@ public class Chess {
 					System.out.println("Black wins");
 				}
 				//Dont run anything else in this loop iteration
+			}
+			
+			if( b.checkOther(!wTurn) == true ) {
+				System.out.println("Check");
 			}
 			
 			//Alternates players

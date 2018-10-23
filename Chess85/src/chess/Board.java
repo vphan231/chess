@@ -122,7 +122,7 @@ public class Board {
 	
 	public boolean valid( int r1, int c1, int r2, int c2 ) {
 		Piece p = board[r1][c1];
-		if( p == null ) {
+		if( p == null ) { //no piece to move
 			return false;
 		}
 		char type = p.type;
@@ -182,7 +182,6 @@ public class Board {
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
 		//checks if c is a valid piece to promote to
-		
 		return true; //placeholder
 	}
 	public void promote( int x, int y, char c ) {
@@ -194,6 +193,12 @@ public class Board {
 		//check if move puts own king in check
 		return true; //placeholder
 	}
+	
+	public boolean checkOther( boolean color ) { 
+		//checks if other king is in check
+		return true; //placeholder
+	}
+	
 	public boolean checkmate() {
 		//checks if either king is in checkmate
 		return true; //placeholder
