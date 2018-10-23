@@ -2,7 +2,7 @@ package chess;
 
 public class Knight extends Piece {
 	
-	char type = 'k';
+	char type = 'N';
 	
 	public Knight( boolean color, String name ) {
 		this.color = color;

@@ -1,22 +1,24 @@
 Stuff that still needs to be done
-	Chess/start
-		Input cases
-			g7 g8
-			g7 g8 Q
-			Resign
-			g7 g8 Draw?
-			draw	
-		Bunch of other stuff
-	Board
-		promote method
+	Chess.java
+		fill in commented lines
+		(new method) validInput	
+		
+	Board.java
+		(new method) validPromote
+		(new method) check //checks if move puts own king is in check
+		(new method) checkmate //checks if either king is in checkmate
 		Need special valid move checks
-			check if move puts own king in check 
-				-(this method can also be used to check valid moves for a king that is in check)
 			enpassant
 			castling
-	Somewhere
-		Checkmate check
 		
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+10/23 Updates - C
+	Chess.java
+		draw
+		resign
+		promote
+	validInput
+	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 10/21 Updates - C
 	Board 

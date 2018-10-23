@@ -176,10 +176,21 @@ public class Board {
 		board[r1][c1] = null;
 		board[r2][c2] = p;
 		
+		return true;
+	}
+	
+	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
+		return true; //placeholder
+	}
+	public void promote( int x, int y, char c ) {
+		return;
+	}
+	
+	public boolean check( int x1, int y1, int x2, int y2 ) {
+		return true; //placeholder
+	}
+	public boolean checkmate() {
 		return true; //placeholder
 	}
 	
-	public void promote( int x, int y) {
-		return;
-	}
 }
