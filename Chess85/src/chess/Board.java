@@ -187,6 +187,21 @@ public class Board {
 	}
 	public void promote( int x, int y, char c ) {
 		//promote piece at x y to piece c
+		boolean pieceColor = board[x][y].color;
+		String pieceChar = board[x][y].name.substring(0, 1); //just want the first char, either 'b' or 'w'
+		
+		if(c == 'R') {
+			board[x][y] =  new Rook(pieceColor, pieceChar+"R");
+		}
+		else if(c == 'B') {
+			board[x][y] =  new Bishop(pieceColor, pieceChar+"B");
+		}
+		else if(c == 'N') {
+			board[x][y] =  new Knight(pieceColor, pieceChar+"N");
+		}
+		else {
+			board[x][y] =  new Queen(pieceColor, pieceChar+"Q");
+		}
 		return;
 	}
 	
