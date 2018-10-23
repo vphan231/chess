@@ -222,8 +222,82 @@ public class Board {
 		 *Do the same for right side. Do the same for PathV for checks for Queen or Rook. Do the same for PathD for
 		 *checks of Bishop and Queen.   
 		 */
+		int kingX= 0, kingY= 0;
+		boolean pieceColor = false;
+		if(board[x2][y2].color == true) {
+			pieceColor = true;
+		}
+		//get king's coordinates
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if(board[i][j].type == 'K' && (board[x2][y2].color == pieceColor)) {
+					kingX = i;
+					kingY = j;
+				}
+			}
+		}
+		//check left horizontal of king
+		if(!pathH(kingX, kingY, 0, kingY)) {
+			for (int i = kingX; i <= 0; i--) {
+				if (board[i][kingY] != null) { 
+					if (board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
+						return false;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		//check right horizontal of King
+		if(!pathH(kingX, kingY, 7, kingY)) {
+			for (int i = kingX; i >= 7; i++) {
+				if (board[i][kingY] != null) { 
+					if (board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
+						return false;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		//check upper vertical of King
+		if(!pathV(kingX, kingY, kingX, 0)) {
+			for (int i = kingY; i <= 0; i--) {
+				if (board[kingX][i] != null) { 
+					if(board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
+						return false;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		//check lower vertical of King
+		if(!pathV(kingX, kingY, kingX, 7)) {
+			for (int i = kingY; i >= 7; i++) {
+				if (board[kingX][i] != null) { 
+					if(board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
+						return false;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
+		//check upper left diagonal
+		
+		//check upper right diagonal
+		
+		//check lower left diagonal
+		
+		//check lower right diagonal
 		return true; //placeholder
 	}
+	
 	public boolean checkmate() {
 		//checks if either king is in checkmate
 		return true; //placeholder
