@@ -180,9 +180,13 @@ public class Board {
 	}
 	
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
+		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
+		//checks if c is a valid piece to promote to
+		
 		return true; //placeholder
 	}
 	public void promote( int x, int y, char c ) {
+		//promote piece at x y to piece c
 		return;
 	}
 	

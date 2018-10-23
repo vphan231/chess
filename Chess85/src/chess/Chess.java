@@ -25,13 +25,11 @@ public class Chess {
 		
 		while( gameEnded == false ){
 			
-			if( badInput = false ) {
+			if( badInput == false ) { //dont reprint if bad input == true
 				if( wTurn ) {
 					System.out.println("White's turn: ");
-					wTurn = false;
 				}else {					
 					System.out.println("Black's turn: ");
-					wTurn = true;
 				}
 			}
 			input = sc.nextLine();
@@ -72,7 +70,7 @@ public class Chess {
 				}
 			}
 		
-			if( /* checkmate */ ) { //checkmate check will be implemented in Board.java
+			if( b.checkmate() == true ) { 
 				gameEnded = true;
 				if( wTurn ) {
 					System.out.println("White wins");
