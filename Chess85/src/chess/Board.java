@@ -182,8 +182,16 @@ public class Board {
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
 		//checks if c is a valid piece to promote to
-		
-		return true; //placeholder
+		if (c != 'Q' || c != 'R' || c != 'N' || c != 'B') {
+			return false;
+		}
+		// 1st: if piece is a pawn. 2nd: if validate a pawn's move. 3rd: Final move is at the end of the board
+		if (board[x1][y1].type == 'P' && board[x1][y1].validMove(x1, y1, x2, y2) && (x2 == 0 || x2 == 7) ) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	public void promote( int x, int y, char c ) {
 		//promote piece at x y to piece c
@@ -207,6 +215,13 @@ public class Board {
 	
 	public boolean check( int x1, int y1, int x2, int y2 ) {
 		//check if move puts own king in check
+		
+		/*assume the move has already been made from (x1,y1) to (x2,y2). traverse the board to find the king: 
+		 *board[i][j].type = 'K' and match color. Check PathH left side of king to end of the board, if true: means there are
+		 * no pieces to its left, else if false, need to traverse left until not null. Check if the piece type = Queen or Rook.
+		 *Do the same for right side. Do the same for PathV for checks for Queen or Rook. Do the same for PathD for
+		 *checks of Bishop and Queen.   
+		 */
 		return true; //placeholder
 	}
 	public boolean checkmate() {
