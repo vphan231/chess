@@ -237,10 +237,10 @@ public class Board {
 			}
 		}
 		//check left horizontal of king
-		if(!pathH(kingX, kingY, 0, kingY)) {
-			for (int i = kingX-1; i >= 0; i--) {
-				if (board[i][kingY] != null) { 
-					if (board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
+		if(!pathH(kingX, kingY, kingX, 0)) {
+			for (int i = kingY-1; i >= 0; i--) {
+				if (board[kingX][i] != null) { 
+					if (board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
 						return false;
 					}
 					else {
@@ -250,10 +250,10 @@ public class Board {
 			}
 		}
 		//check right horizontal of King
-		if(!pathH(kingX, kingY, 7, kingY)) {
-			for (int i = kingX+1; i <= 7; i++) {
-				if (board[i][kingY] != null) { 
-					if (board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
+		if(!pathH(kingX, kingY, kingX, 7)) {
+			for (int i = kingY+1; i <= 7; i++) {
+				if (board[kingX][i] != null) { 
+					if (board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
 						return false;
 					}
 					else {
@@ -263,10 +263,10 @@ public class Board {
 			}
 		}
 		//check upper vertical of King
-		if(!pathV(kingX, kingY, kingX, 0)) {
-			for (int i = kingY+1; i >= 0; i--) {
-				if (board[kingX][i] != null) { 
-					if(board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
+		if(!pathV(kingX, kingY, 0, kingY)) {
+			for (int i = kingX-1; i >= 0; i--) {
+				if (board[i][kingY] != null) { 
+					if(board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
 						return false;
 					}
 					else {
@@ -276,10 +276,10 @@ public class Board {
 			}
 		}
 		//check lower vertical of King
-		if(!pathV(kingX, kingY, kingX, 7)) {
-			for (int i = kingY-1; i <= 7; i++) {
-				if (board[kingX][i] != null) { 
-					if(board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
+		if(!pathV(kingX, kingY, 7, kingY)) {
+			for (int i = kingX+1; i <= 7; i++) {
+				if (board[i][kingY] != null) { 
+					if(board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
 						return false;
 					}
 					else {
@@ -303,9 +303,9 @@ public class Board {
 		}
 		//check upper right diagonal
 		tempY = kingY;
-		for (int i = kingX+1; i <= 7; i++) {
-			tempY--;
-			if (tempY >= 0 && board[i][tempY] != null) {
+		for (int i = kingX-1; i >= 0; i--) {
+			tempY++;
+			if (tempY <= 7 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
 					return false;
 				}
@@ -316,9 +316,9 @@ public class Board {
 		}
 		//check lower left diagonal
 		tempY = kingY;
-		for (int i = kingX-1; i >= 0; i--) {
-			tempY++;
-			if (tempY <= 7 && board[i][tempY] != null) {
+		for (int i = kingX+1; i <= 7; i++) {
+			tempY--;
+			if (tempY >= 0 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
 					return false;
 				}
