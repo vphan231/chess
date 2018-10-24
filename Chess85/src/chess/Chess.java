@@ -66,11 +66,15 @@ public class Chess {
 				drawProposed = true;
 			}
 			moveCom = convertArr(input); // moveCom[4] = x1, x1, x2, x2	
+			
+			/*
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], !wTurn); //checks if move puts other player in check
 			System.out.println("check: " + check);
 			if( check == true ) {
 				System.out.println("Check");
 			}				
+			*/
+			
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3]);
 			if( input.length() == 7 ) {
 				b.promote(moveCom[2], moveCom[3], input.charAt(6));
@@ -130,10 +134,10 @@ public class Chess {
 	public static int[] convertArr( String moveStr ) {
 		//moveStr = g7 g8 draw
 		int[] coords = new int[4];
-		coords[1] = convert( moveStr.charAt(0) );
-		coords[0] = convert( moveStr.charAt(1) );
-		coords[3] = convert( moveStr.charAt(3) );
-		coords[2] = convert( moveStr.charAt(4) );
+		coords[0] = convert( moveStr.charAt(0) ); 
+		coords[1] = convert( moveStr.charAt(1) ); 
+		coords[2] = convert( moveStr.charAt(3) );
+		coords[3] = convert( moveStr.charAt(4) );
 		return coords;
 	}
 	
