@@ -176,6 +176,14 @@ public class Board {
 		board[r1][c1] = null;
 		board[r2][c2] = p;
 		
+		//default promote pawn g7 g8
+		if( r2 == 1 && p.type == 'P') {
+			board[r2][c2] = new Queen( true, "wQ" );
+		}
+		if( r2 == 7 && p.type == 'P') {
+			board[r2][c2] = new Queen( false, "bQ" );
+		}
+		
 		return true;
 	}
 
