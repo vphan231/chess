@@ -455,8 +455,16 @@ public class Board {
 	}
 	
 
-	public boolean checkmate() {
-		//checks if either king is in checkmate
+	public boolean checkmate( boolean color ) {
+		//checks king of color is in checkmate
+		//use check method
+		//find king - kingX, kingY
+		//use check( kingX, kingY , x2, y2 ) on all possible spots that the king can move to
+		//if all returns true, then checkmate
+		//use board[y][x] for coordinates, arrays go down then across
+		//while traversing using loops, x is still going across, y is going down
+		//note: king in middle of the board has 8 possible spots that it can move to, king in corner only has 3 
+
 		return false; //placeholder
 	}
 	
