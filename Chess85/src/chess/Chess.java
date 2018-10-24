@@ -9,7 +9,6 @@ public class Chess {
 	public static void main(String[] args) {
 		Board b = new Board();
 		b.initialize();
-		b.print();
 		start(b);
 	}
 	
@@ -21,56 +20,63 @@ public class Chess {
 		int[] moveCom = new int[4]; //moveCommands
 		boolean drawProposed = false;
 		boolean gameEnded = false;
-		boolean badInput = false;
+		boolean valid = true;
+		boolean check; 
 		
 		while( gameEnded == false ){
-			
-			if( badInput == false ) { //dont reprint if bad input == true
+			System.out.println();
+			if( valid == true) { //dont reprint if bad input == true
 				b.print();
+				System.out.println();
 			}
 			if( wTurn ) {
-				System.out.println("White's turn: ");
+				System.out.print("White's turn: ");
 			}else {					
-				System.out.println("Black's turn: ");
+				System.out.print("Black's turn: ");
 			}
 			input = sc.nextLine();
 			
-			badInput = validInput( b, input);
-			if( badInput == true ) {
+			valid = validInput( b, input, wTurn);
+			System.out.println("validInput: " + valid);
+			if( valid == false ) {
 				System.out.println("Illegal move, try again:");
-				//don't run anything else in this loop iteration (is that continue or break?)
+				continue;
 			}
 		
 			if( input.equals("resign") ) {
 				gameEnded = true;
-				badInput = false;
+				valid = true;
 				if( wTurn ) {
 					System.out.println("Black wins");
 				}else {
 					System.out.println("White wins");
 				}
-				//Dont run anything else in this loop iteration
+				continue;
 			}
 			
 			if(drawProposed == true && input.equals("draw") ) {
-				badInput = false;
+				valid = true;
 				gameEnded = true;
-				//Dont run anything else in this loop iteration
+				continue;
 			}
 
 			//Need to work on this
-			if( validInput(b, input) == true ) {
-				badInput = false;
-				if( input.length() == 11 ) {
-					drawProposed = true;
-				}
-				moveCom = convertArr(input); // moveCom[4] = x1, x1, x2, x2	
-				b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3]);
-				if( input.length() == 7 ) {
-					b.promote(moveCom[2], moveCom[3], input.charAt(6));
-				}
+			valid = true;
+			if( input.length() == 11 ) {
+				drawProposed = true;
 			}
-		
+			moveCom = convertArr(input); // moveCom[4] = x1, x1, x2, x2	
+			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], !wTurn); //checks if move puts other player in check
+			System.out.println("check: " + check);
+			if( check == true ) {
+				System.out.println("Check");
+			}				
+			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3]);
+			if( input.length() == 7 ) {
+				b.promote(moveCom[2], moveCom[3], input.charAt(6));
+			}
+			
+			/*
 			if( b.checkmate() == true ) { 
 				System.out.println("Checkmate");
 				gameEnded = true;
@@ -79,52 +85,55 @@ public class Chess {
 				}else {
 					System.out.println("Black wins");
 				}
-				//Dont run anything else in this loop iteration
+				continue;
 			}
-			
-			if( b.checkOther(!wTurn) == true ) {
-				System.out.println("Check");
-			}
+			*/
 			
 			//Alternates players
-			badInput = false;
 			if( wTurn ) {
 				wTurn = false;
 			}else {
 				wTurn = true;
 			}
 		}
-		
 		sc.close();
 	}
 	
 
-	public static boolean validInput( Board b, String str ) {
-		
+	public static boolean validInput( Board b, String str, boolean color ) {
 		if( str.equals("draw") || str.equals("resign") ) {
 			return true;
 		}
-		
-		int[] moveCom = convertArr( str );
-		
-		if( /*  str is not of the format g7 g8 || g7 g8 draw? || g7 g8 Q */ ) { //should there be a new method for this check 
+		boolean x1 = Character.isLetter(str.charAt(0));
+		boolean y1 = Character.isDigit(str.charAt(1));
+		boolean x2 = Character.isLetter(str.charAt(3));
+		boolean y2 = Character.isDigit(str.charAt(4));
+		if( !(x1 && y1 && x2 && y2) ) {
+			return false;
+		}
+		if( str.length() > 7 && !str.contains("draw") ) {
 			return false;
 		}
 		
+		int[] moveCom = convertArr( str );
+	
 		if( str.length() == 7 ) { //g7 g8 Q
+			char c = str.charAt(6);
+			if( c!='Q' && c!='N' && c!='R' && c!='B' ) {
+				return false;
+			}
 			return b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], str.charAt(6));
 		}
-		
-		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3]);
+		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3], color );
 	}
 	
 	public static int[] convertArr( String moveStr ) {
 		//moveStr = g7 g8 draw
 		int[] coords = new int[4];
-		coords[0] = convert( moveStr.charAt(0) );
-		coords[1] = convert( moveStr.charAt(1) );
-		coords[2] = convert( moveStr.charAt(3) );
-		coords[3] = convert( moveStr.charAt(4) );
+		coords[1] = convert( moveStr.charAt(0) );
+		coords[0] = convert( moveStr.charAt(1) );
+		coords[3] = convert( moveStr.charAt(3) );
+		coords[2] = convert( moveStr.charAt(4) );
 		return coords;
 	}
 	

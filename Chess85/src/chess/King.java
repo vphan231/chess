@@ -2,9 +2,9 @@ package chess;
 
 public class King extends Piece {
 	
-	char type = 'K';
 	
 	public King( boolean color, String name ) {
+		this.type = 'K';
 		this.color = color;
 		this.name = name;
 	}

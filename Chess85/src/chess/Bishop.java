@@ -2,9 +2,9 @@ package chess;
 
 public class Bishop extends Piece {
 	
-	char type = 'B';
 	
 	public Bishop(boolean color, String name) {
+		this.type = 'B';
 		this.color = color;
 		this.name = name;
 	}

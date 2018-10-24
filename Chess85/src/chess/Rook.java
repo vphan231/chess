@@ -1,9 +1,9 @@
 package chess;
 
 public class Rook extends Piece{
-	char type = 'R';
-	
+
 	public Rook(boolean color, String name) {
+		this.type = 'R';
 		this.color = color;
 		this.name = name;
 	}

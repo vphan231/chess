@@ -1,8 +1,9 @@
 package chess;
 
 public class Queen extends Piece{
-	char type = 'Q';
+
 	public Queen(boolean color, String name) {
+		this.type = 'Q';
 		this.color = color;
 		this.name = name;
 	}

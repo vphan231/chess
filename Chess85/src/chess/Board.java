@@ -62,38 +62,44 @@ public class Board {
 					}
 				}
 			}
-			System.out.println(colDis);
+			System.out.print(colDis);
+			System.out.println(" " + i);
 			colDis--;
 		}
 		System.out.println(" a  b  c  d  e  f  g  h");
+		System.out.println(" 0  1  2  3  4  5  6  7 ");
 	}
 	
 	//returns true if path is open, false if path is clear
-	public boolean pathH( int r1, int c1, int r2, int c2 ) {
+	public boolean pathH( int y1, int x1, int y2, int x2 ) {
 		//row remains the same, move along col
-		int lower = c2; int higher = c1;
-		if( c1 <= c2 ) {
-			lower = c1;	higher = c2;
+		int begin = x1+1; int end = x2; // y1 <= y2
+		if( x1 > x2 ){
+			begin = x2; end = x1-1;
 		}
-		
-		for( int i = lower+1; i < higher-1; i++) {
-			if( board[r1][i]!= null) {
+		for( int i = begin; i <= end; i++ ) {
+			if( board[y1][i] !=  null ) {
 				return false;
 			}
 		}
+
 		return true;
 	}
-	public boolean pathV( int r1, int c1, int r2, int c2 ) {
+	public boolean pathV( int y1, int x1, int y2, int x2 ) {
 		//move along row, col remains the same
-		int lower = r2; int higher = r1;
-		if( r1 <= r2 ) {
-			lower = r1;	higher = r2;
+		int begin = y1+1; int end = y2; // y1 <= y2
+		
+		if( y1 > y2 ){
+			begin = y2; end = y1-1;
 		}
-		for( int i = lower+1; i < higher-1; i++) {
-			if(board[i][c1]!= null) {
+		
+		for( int i = begin; i <= end; i++ ) {
+			//System.out.println(x1 + " " + i);
+			if( board[i][x1] !=  null ) {
 				return false;
 			}
 		}
+
 		return true;
 	}
 	
@@ -120,13 +126,19 @@ public class Board {
 		return true;
 	}
 	
-	public boolean valid( int r1, int c1, int r2, int c2 ) {
+	public boolean valid( int r1, int c1, int r2, int c2, boolean color ) {
+
 		Piece p = board[r1][c1];
 		if( p == null ) { //no piece to move
 			return false;
 		}
+		if( p.color != color ) {
+			return false;
+		}
 		char type = p.type;
-		boolean spec = p.validMove(r1, c1, r1, c2);
+		//System.out.println("piece: " + p.name);
+		//System.out.println("type: " + type );
+		boolean spec = p.validMove(r1, c1, r2, c2);
 		if( spec == false ) {
 			return false;
 		}
@@ -167,21 +179,30 @@ public class Board {
 		return true;
 	}
 
-	public boolean move( int r1, int c1, int r2, int c2 ) {
-		Piece p = board[r1][c1];
-		boolean valid = valid( r1, c1, r2, c2 );
+	public boolean move( int y1, int x1, int y2, int x2 ) {
+		/*
+		System.out.print("move: ");
+		System.out.print(y1);
+		System.out.print(x1);
+		System.out.print(y2);
+		System.out.println(x2);
+		*/
+		Piece p = board[y1][x1];
+		//System.out.println("piece: " + p.name);
+		
+		boolean valid = valid( y1, x1, y2, x2, p.color );
 		if( valid == false ) {
 			return false;
 		}
-		board[r1][c1] = null;
-		board[r2][c2] = p;
+		board[y1][x1] = null;
+		board[y2][x2] = p;
 		
 		//default promote pawn g7 g8
-		if( r2 == 1 && p.type == 'P') {
-			board[r2][c2] = new Queen( true, "wQ" );
+		if( y2 == 1 && p.type == 'P') {
+			board[y2][x2] = new Queen( true, "wQ" );
 		}
-		if( r2 == 7 && p.type == 'P') {
-			board[r2][c2] = new Queen( false, "bQ" );
+		if( y2 == 7 && p.type == 'P') {
+			board[y2][x2] = new Queen( false, "bQ" );
 		}
 		
 		return true;
@@ -221,8 +242,8 @@ public class Board {
 		return;
 	}
 	
-	public boolean check( int x1, int y1, int x2, int y2 ) {
-		//check if move puts own king in check
+	public boolean check( int y1, int x1, int y2, int x2, boolean pieceColor ) {
+		//check if move puts king of specified color in check
 		
 		/*assume the move has already been made from (x1,y1) to (x2,y2). traverse the board to find the king: 
 		 *board[i][j].type = 'K' and match color. Check PathH left side of king to end of the board, if true: means there are
@@ -230,25 +251,50 @@ public class Board {
 		 *Do the same for right side. Do the same for PathV for checks for Queen or Rook. Do the same for PathD for
 		 *checks of Bishop and Queen.   
 		 */
+		
+		//make the move - has to be reverted before every return
+		
+		/*
+		System.out.print("check: ");
+		System.out.print(y1);
+		System.out.print(x1);
+		System.out.print(y2);
+		System.out.println(x2);
+		System.out.println( "color: " + pieceColor);
+		*/
+		
+		board[y2][x2] = board[y1][x1]; 
+		board[y1][x1] = null;
+		//print();
+	
 		int kingX= 0, kingY= 0;
-		boolean pieceColor = false;
-		if(board[x2][y2].color == true) {
-			pieceColor = true;
-		}
+			
 		//get king's coordinates
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if(board[i][j].type == 'K' && (board[x2][y2].color == pieceColor)) {
+				Piece p = board[i][j];
+				if( p != null ) {
+					//System.out.print( p.name + " ");
+					//System.out.println(p.type );
+				}
+				if( p != null && p.type == 'K' && p.color == pieceColor) {
 					kingX = i;
 					kingY = j;
+					//System.out.println();
+					System.out.println("King found at: " + kingX + ", " + kingY);
 				}
 			}
 		}
+		//System.out.println();
+
+		
 		//check left horizontal of king
 		if(!pathH(kingX, kingY, kingX, 0)) {
 			for (int i = kingY-1; i >= 0; i--) {
 				if (board[kingX][i] != null) { 
 					if (board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
+						board[x1][y1] = board[x2][y2];
+						board[x2][y2] = null;
 						return false;
 					}
 					else {
@@ -262,6 +308,8 @@ public class Board {
 			for (int i = kingY+1; i <= 7; i++) {
 				if (board[kingX][i] != null) { 
 					if (board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
+						board[x1][y1] = board[x2][y2];
+						board[x2][y2] = null;
 						return false;
 					}
 					else {
@@ -275,6 +323,8 @@ public class Board {
 			for (int i = kingX-1; i >= 0; i--) {
 				if (board[i][kingY] != null) { 
 					if(board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
+						board[x1][y1] = board[x2][y2];
+						board[x2][y2] = null;
 						return false;
 					}
 					else {
@@ -288,6 +338,8 @@ public class Board {
 			for (int i = kingX+1; i <= 7; i++) {
 				if (board[i][kingY] != null) { 
 					if(board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
+						board[x1][y1] = board[x2][y2];
+						board[x2][y2] = null;
 						return false;
 					}
 					else {
@@ -302,6 +354,8 @@ public class Board {
 			tempY--;
 			if (tempY >= 0 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					board[x1][y1] = board[x2][y2];
+					board[x2][y2] = null;
 					return false;
 				}
 				else {
@@ -315,6 +369,8 @@ public class Board {
 			tempY++;
 			if (tempY <= 7 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					board[x1][y1] = board[x2][y2];
+					board[x2][y2] = null;
 					return false;
 				}
 				else {
@@ -328,6 +384,8 @@ public class Board {
 			tempY--;
 			if (tempY >= 0 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					board[x1][y1] = board[x2][y2];
+					board[x2][y2] = null;
 					return false;
 				}
 				else {
@@ -341,6 +399,8 @@ public class Board {
 			tempY++;
 			if (tempY <= 7 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					board[x1][y1] = board[x2][y2];
+					board[x2][y2] = null;
 					return false;
 				}
 				else {
@@ -348,20 +408,16 @@ public class Board {
 				}
 			}
 		}
-		
+		board[y1][x1] = board[y2][x2];
+		board[y2][x2] = null;
 		return true; //finally return true if none of the false conditions happen
-	}
-	
-
-	public boolean checkOther( boolean color ) { 
-		//checks if other king is in check
-		return true; //placeholder
+		
 	}
 	
 
 	public boolean checkmate() {
 		//checks if either king is in checkmate
-		return true; //placeholder
+		return false; //placeholder
 	}
 	
 }

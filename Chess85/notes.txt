@@ -1,3 +1,28 @@
+Been Debugging - lots of bugs
+	1. input is g3 which is across first then down
+		we've been doing coordinates x1, y1, x2, y2
+		we're getting a piece by board[x1][x2] which is down first then across
+			Make all parameters y1, x1, y2, x2
+		**Fix every method**
+			
+	2. When moving pawns forward - have to check for color
+		in pawn validMove check was y2=y1+2 || y2=y1+2
+			this is only the case for black pawns
+			wP move a2 a3,  [6][0] ->[5][0], y2=y1-2 || y2=y1-2
+			color specific, cant do +2||-2
+		**Fixed** are there any other classes that needs to be fixed?
+		
+	3. You can eat your own color's piece right now
+		add if statement in Board.valid to fix
+	
+Stuff fixed
+	Pawn 
+	Knight
+	pathV
+	pathH
+	move
+	
+
 Stuff that still needs to be done
 	Chess.java
 		fill in commented lines
@@ -15,8 +40,18 @@ Stuff that still needs to be done
 		Need special valid move checks
 			enpassant
 			castling
-		
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+10/24 Bug fixes - C
+	Pawn.java
+	Chess.java
+		convert
+	Board.java
+		pathV
+		pathH
+		move
+		some of check
+
 10/23 Updates - C
 	Chess.java
 		start(){
