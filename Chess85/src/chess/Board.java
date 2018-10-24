@@ -292,7 +292,7 @@ public class Board {
 		int tempY = kingY;
 		for (int i = kingX-1; i >= 0; i--) {
 			tempY--;
-			if (i >= 0 && tempY >= 0 && board[i][tempY] != null) {
+			if (tempY >= 0 && board[i][tempY] != null) {
 				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
 					return false;
 				}
@@ -302,11 +302,46 @@ public class Board {
 			}
 		}
 		//check upper right diagonal
-		
+		tempY = kingY;
+		for (int i = kingX+1; i <= 7; i++) {
+			tempY--;
+			if (tempY >= 0 && board[i][tempY] != null) {
+				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					return false;
+				}
+				else {
+					break;
+				}
+			}
+		}
 		//check lower left diagonal
-		
+		tempY = kingY;
+		for (int i = kingX-1; i >= 0; i--) {
+			tempY++;
+			if (tempY <= 7 && board[i][tempY] != null) {
+				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					return false;
+				}
+				else {
+					break;
+				}
+			}
+		}
 		//check lower right diagonal
-		return true; //placeholder
+		tempY = kingY;
+		for (int i = kingX+1; i <= 7; i++) {
+			tempY++;
+			if (tempY <= 7 && board[i][tempY] != null) {
+				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
+					return false;
+				}
+				else {
+					break;
+				}
+			}
+		}
+		
+		return true; //finally return true if none of the false conditions happen
 	}
 	
 	public boolean checkmate() {
