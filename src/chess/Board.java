@@ -4,6 +4,11 @@ package chess;
 public class Board {
 
 	public Piece[][] board;
+	public int prevX1;
+	public int prevY1;
+	public int prevX2;
+	public int prevY2;
+	public char prevType;
 	
 	public Board() {
 		this.board = new Piece[8][8];
@@ -497,8 +502,7 @@ public class Board {
 		board[y1][x1] = board[y2][x2];
 		board[y2][x2] = null;
 		return true; //finally return true if none of the false conditions happen
-		*/
-		
+		*/	
 	}
 	
 
@@ -513,6 +517,74 @@ public class Board {
 		//note: king in middle of the board has 8 possible spots that it can move to, king in corner only has 3 
 
 		return false; //placeholder
+	}
+	
+	/*need to somehow have access to previous move. After a scan in: set board.prevX1,board.prevY1, board.prevX2
+	 * board.prevY2, and board.prevType to the "g3 g2" that was entered. 
+	 */
+	public boolean enpassant(int x1, int y1, int x2, int y2, char type) {
+		//1)check if both are pawns. 2)check if the prev move was a double move. 
+		if(prevType != 'P' || type != 'P' || prevX1 != prevX2+2 || prevX1 != prevX2-2) {
+			return false;
+		}
+		
+		if(prevX1+1 > 7) {//out of bounds. just check left side (if they are next to each other)
+			if(board[prevY2][prevX2-1] == board[y1][x1]) {
+				//yes both pawns are right next to each other.
+				//check if the movement (x2,y2) is the correct movement
+				if(y2 == prevY2 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
+					return true;
+				}
+				
+			}
+		}
+		else if(prevX1-1 < 0) {//out of bounds. just check right side
+			if(board[prevY2][prevX2+1] == board[y1][x1]) {
+				if(y2 == prevY2 && board[y2][x2] == null) {
+					return true;
+				}
+			}
+		}
+		else {//check both left and right
+			if(board[prevY2][prevX2+1] == board[y1][x1] || board[prevY1][prevX1-1] == board[y1][x1]) {
+				if(y2 == prevY2 && board[y2][x2] == null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/*I'm going to have to make an update to Rook and King's field: add boolean moveYet = false. We will set it to
+	 * true when we move a rook or king. We might have to do piece to have this field.
+	 */
+	public boolean castling(int x1, int y1, int x2, int y2, boolean pieceColor) {
+		/*king and rook cannot move yet
+		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
+		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
+		 */
+		int kingX= 0, kingY=0;
+		
+		if(pieceColor = false) {
+			kingX=0;
+			kingY=4;
+		}
+		else {
+			kingX=7;
+			kingY=4;
+		}
+		
+		if(pieceColor == false && !board[kingX][kingY].moveYet) {//piece to have field moveYet?
+			//1) current spot-> !check 
+			//2) 1 spot left or right depending on which way he/she wants to castle-> !check
+			//3) 2 spot left or right depending on direction of castle(where king will be)-> !check
+			//if all 3 scenarios are true -> return true;
+		}
+		if(pieceColor == true && !board[kingX][kingY].moveYet) {
+			//same as above
+		}
+
+		return false;//placeholder
 	}
 	
 }
