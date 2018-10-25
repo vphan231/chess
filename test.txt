@@ -1,0 +1,127 @@
+
+	Pawn
+		Should 
+			First move
+				1 -------- move 2 spaces
+				2 -------- move 1 space
+				14 -------- diagonal right kill
+				6 -------- diagonal left kill
+				enpassant
+			Regular move
+				5 -------- move 1 space
+				3 -------- diagonal right kill
+				4 -------- diagonal left kill
+				25 ------- promote auto to queen
+				promote manual
+		Should not 
+			10 ------- jump over pieces (first move)
+			11 ------- move 2 spaces (reg move)
+			29 -------- forward kill
+			X ------move horizontal
+				12 --------- right
+				13 --------- left
+			move backwards
+				16 ---------- vertical
+				17 ---------- diagonal right
+				diagonal left
+			move diagonal no kill
+				19 --------diagonal right
+				18 ------- diagonal left	
+			X -------------- diagonal kill own color
+				28 ---------- diagonal right
+				20 ---------- diagonal left
+			21 --------- promote not at the end	
+			invalid promote piece
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	Rook 
+		Should 
+			Move Horizontal
+				14 --------- Right 
+				Left
+			Move Vertical
+				8 ---------- Forwards
+				Backwards
+			Kill Horizontal	
+				Right
+				Left
+			Kill Vertical
+				Forwards 
+				Backwards
+		Should not
+			Move Diagonal
+				right forwards
+				right backwards
+				left forwards
+				left backwards
+			Jump over pieces
+				Horizontal right
+				Horizontal left
+				Vertical forwards
+				Vertical backwards
+			Promote
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+	Bishop 
+		Should
+			move
+				9 -------- diagonal right forwards
+				diagonal right backwards
+				8 -------- diagonal left forwards
+				diagonal left backwards
+			kill
+				diagonal right forwards
+				diagonal right backwards
+				diagonal left forwards
+				diagonal left backwards
+		Should not
+			Jump over pieces
+				diagonal right forwards
+				diagonal right backwards
+				diagonal left forwards
+				diagonal left backwards
+			Promote
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Queen
+		Should
+			move
+				Horizontal 
+					left
+					26 --------- right
+				Vertical 
+					22 --------- forwards
+					27 ---------- backwards
+				Diagonal forwards left/right
+				Diagonal backwards left/right
+			kill
+				Horizontal left/right
+				Vertical forwards/backwards
+				Diagonal forwards left/right
+				Diagonal backwards left/right
+		
+		Should not
+			Jump over pieces
+				Horizontal 
+					left
+					23 ------- right
+				Vertical forwards/backwards
+				Diagonal forwards left/right
+				Diagonal backwards left/right
+			Eat own piecs
+				24 ------- Horizontal left
+			Promote
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Knight 
+		Should
+			Move
+				...
+			Kill
+				...
+		Should not
+			...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	King
+		Should
+			...
+		Should not
+			...
+		

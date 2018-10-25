@@ -97,56 +97,84 @@ public class Board {
 	}
 	
 	public boolean pathD( int r1, int c1, int r2, int c2 ) {
-		int lowerR = r2; int higherR = r1;
-		int lowerC = c2; int higherC = c1;
-		if( r1 < r2 ) {
-			lowerR = r1; higherR = r2;
-			lowerC = c1; higherC = c2;
+		// r1 c1 r2 c2
+		// 1  3  2  4
+		//     c2 r2         c1 r1
+		//lower[4][2], higher[3][1] 
+					
+		
+		int lowerR = c1; int lowerC = r1; //lower[3][1]
+		int higherR = c2; int higherC = r2; //higher[4][2]
+		
+		if( c1 < c2 ) { //3<4
+			lowerR = c2; lowerC = r2; //lower[4][2]
+			higherR = c1; higherC = r1; 
 		}
+		//System.out.println("lower["+lowerR+"]["+lowerC+"]");
+		//System.out.println("higher["+higherR+"]["+higherC + "]" );
+
+		
 		boolean goingRight = true; // \
 		if ( lowerC < higherC ) {
 			goingRight = false; // /
 		}
-		int k = 0;
-		for( int i = lowerR+1; i < (higherR-lowerR)-1 ; i++ ) {
+		//System.out.println("goingRight: " + goingRight);
+		
+		//going down
+		int k = 1;
+		int begin = higherR+1; // 3
+		int end = lowerR-1; // 2
+		//System.out.println("begin: " + begin);
+		//System.out.println("end: " + end);
+		for( int i = begin; i <= end; i++ ) {
 			if( goingRight == true ) {
-				if( board[i][lowerC+k] != null ) { return false; }
+				if( board[i][higherC+k] != null ) { 
+					//System.out.println("pathD false1");
+					return false; 
+				}
 			}else {
-				if( board[i][lowerC-k] != null ) { return false; }
+				if( board[i][higherC-k] != null ) { 
+					//System.out.println("pathD false2");
+					return false; 
+				}
 			}
 			k++;
 		}
+		if( board[c2][r2] != null && (board[c1][r1].color == board[c2][r2].color) ) {
+			//System.out.println("pathD false3");
+			return false;
+		}
+		//System.out.println("pathD true");
 		return true;
 
 	}
 	
 	public boolean pathV( int x1, int y1, int x2, int y2 ) {
-		System.out.println("pathV:");
-		System.out.print(x1);
-		System.out.print(y1);
-		System.out.print(x2);
-		System.out.println(y2);
+		// x1 y1 x2 y2
+		// 0  6  0  5
 		
+		//System.out.println("pathV:");
+
 		// Same column, move along row - same x, different y
 		int begin = y1+1; int end = y2-1; // y1 <= y2
 		if( y1 > y2 ){
 			begin = y2+1; end = y1-1;
 		}
-		System.out.println("begin: " + begin );
-		System.out.println("End: " + end );
+		//System.out.println("begin: " + begin );
+		//System.out.println("End: " + end );
 		for( int i = begin; i <= end; i++ ) {
-			System.out.println("board[" + i + "][" + x1 + "]");
+			//System.out.println("board[" + i + "][" + x1 + "]");
 			if( board[i][x1] !=  null ) {
-				System.out.println(board[y1][i].name);
-				System.out.println("pathV: false1");
+				//System.out.println(board[y1][i].name);
+				//System.out.println("pathV: false1");
 				return false;
 			}
 		}
 		if( board[y2][x2] != null && (board[y2][x2].color == board[y1][x1].color) ){
-			System.out.println("pathV: false2");
+			//System.out.println("pathV: false2");
 			return false;
 		}
-		System.out.println("pathV: true");
+		//System.out.println("pathV: true");
 		return true;
 		
 		
@@ -154,13 +182,15 @@ public class Board {
 	}
 	
 	public boolean valid( int r1, int c1, int r2, int c2, boolean color ) {
-		
+		/*
 		System.out.print("valid: ");
 		System.out.print(r1);
 		System.out.print(c1);
 		System.out.print(r2);
 		System.out.println(c2);
-		
+		*/
+		// r1 c1 r2 c2
+		// 0  6  0  5
 		Piece p = board[c1][r1];
 		//System.out.println(p.name);
 		if( p == null ) { //no piece to move
@@ -170,7 +200,7 @@ public class Board {
 			return false;
 		}
 		char type = p.type;
-		System.out.println("piece: " + p.name);
+		//System.out.println("piece: " + p.name);
 		//System.out.println("type: " + type );
 		boolean spec = p.validMove(r1, c1, r2, c2);
 		if( spec == false ) {
@@ -193,7 +223,7 @@ public class Board {
 			d = pathD( r1, c1, r2, c2 );
 			direction = 3; //has to be diagonal otherwise spec should've already returned false
 		}
-		System.out.println("Direction: " + direction );
+		//System.out.println("Direction: " + direction );
 		
 		if( type == 'B') { //Bishop
 			return d;
@@ -205,6 +235,15 @@ public class Board {
 			}
 		}
 		if( type == 'P' ) {
+			if( direction == 3) {
+				if( board[c2][r2] != null ) {
+					return d;
+				}
+				return false;
+			}
+			if( board[c2][r2] != null ) {
+				return false;
+			}
 			return v;
 		}
 		if( type == 'Q' ) {
@@ -225,14 +264,16 @@ public class Board {
 
 	public boolean move( int x1, int y1, int x2, int y2 ) {
 		
+		/*
 		System.out.print("move: ");
 		System.out.print(x1);
 		System.out.print(y1);
 		System.out.print(x2);
 		System.out.println(y2);
-		
+		*/
 		Piece p = board[y1][x1];
-		System.out.println("piece: " + p.name);
+		
+		//System.out.println("piece: " + p.name);
 		
 		board[y1][x1] = null;
 		board[y2][x2] = p;
@@ -283,48 +324,55 @@ public class Board {
 	}
 	
 	public boolean check( int x1, int y1, int x2, int y2, boolean pieceColor ) {
-		//check if move puts king of specified color in check
-		
-		/*assume the move has already been made from (x1,y1) to (x2,y2). traverse the board to find the king: 
-		 *board[i][j].type = 'K' and match color. Check PathH left side of king to end of the board, if true: means there are
-		 * no pieces to its left, else if false, need to traverse left until not null. Check if the piece type = Queen or Rook.
-		 *Do the same for right side. Do the same for PathV for checks for Queen or Rook. Do the same for PathD for
-		 *checks of Bishop and Queen.   
-		 */
-		
-		//make the move - has to be reverted before every return
-		
-		/*
-		System.out.print("check: ");
-		System.out.print(y1);
-		System.out.print(x1);
-		System.out.print(y2);
-		System.out.println(x2);
-		System.out.println( "color: " + pieceColor);
-		*/
+		//check if move puts king of specified color in check		
 		
 		board[y2][x2] = board[y1][x1]; 
 		board[y1][x1] = null;
-		//print();
-	
 		int kingX= 0, kingY= 0;
 			
 		//get king's coordinates
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				Piece p = board[i][j];
-				if( p != null ) {
-					//System.out.print( p.name + " ");
-					//System.out.println(p.type );
-				}
 				if( p != null && p.type == 'K' && p.color == pieceColor) {
 					kingX = i;
 					kingY = j;
-					//System.out.println();
-					System.out.println("King found at: " + kingX + ", " + kingY);
 				}
 			}
 		}
+		
+		boolean check = false;
+		for( int i = 0; i < 8; i++ ) {
+			for( int j = 0; j < 8; j++ ) {
+				Piece p = board[i][j];
+				if( p != null && p.color == !pieceColor ) {
+					if( p.type == 'B' && valid(i, j, kingX, kingY, !pieceColor) ) {
+						check = true;
+					}
+					if( p.type == 'K' && valid(i, j, kingX, kingY, !pieceColor) ) {
+						check = true;
+					}
+					if( p.type == 'N' && valid(i, j, kingX, kingY, !pieceColor) ) {
+						check = true;
+					}
+					if( p.type == 'P' && valid(i, j, kingX, kingY, !pieceColor) ) {
+						check = true;
+					}
+					if( p.type == 'Q' && valid(i, j, kingX, kingY, !pieceColor) ) {
+						check = true;
+					}
+					if( p.type == 'R' && valid(i, j, kingX, kingY, !pieceColor) ) {
+						check = true;
+					}
+				}
+			}
+		}
+		board[y1][x1] = board[y2][x2]; 
+		board[y2][x2] = null;
+		return check;
+		
+		
+		/*
 		//System.out.println();
 		//check left horizontal of king
 		if(!pathH(kingX, kingY, kingX, 0)) {
@@ -449,7 +497,7 @@ public class Board {
 		board[y1][x1] = board[y2][x2];
 		board[y2][x2] = null;
 		return true; //finally return true if none of the false conditions happen
-		
+		*/
 		
 	}
 	

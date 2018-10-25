@@ -36,6 +36,12 @@ public class Chess {
 			}
 			input = sc.nextLine();
 			
+			if( input.length() < 5 ) {
+				System.out.println("Illegal move, try again:");
+				valid = false;
+				continue;
+			}
+			
 			valid = validInput( b, input, wTurn);
 			System.out.println("validInput: " + valid);
 			if( valid == false ) {
