@@ -1,36 +1,13 @@
 
 	Pawn
 		Should 
-			First move
-				1 -------- move 2 spaces
-				2 -------- move 1 space
-				14 -------- diagonal right kill
-				6 -------- diagonal left kill
-				enpassant
-			Regular move
-				5 -------- move 1 space
-				3 -------- diagonal right kill
-				4 -------- diagonal left kill
-				25 ------- promote auto to queen
-				promote manual
+			Enpassant
+			Promote manual
 		Should not 
-			10 ------- jump over pieces (first move)
-			11 ------- move 2 spaces (reg move)
-			29 -------- forward kill
-			X ------move horizontal
-				12 --------- right
-				13 --------- left
 			move backwards
 				16 ---------- vertical
 				17 ---------- diagonal right
 				diagonal left
-			move diagonal no kill
-				19 --------diagonal right
-				18 ------- diagonal left	
-			X -------------- diagonal kill own color
-				28 ---------- diagonal right
-				20 ---------- diagonal left
-			21 --------- promote not at the end	
 			invalid promote piece
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	Rook 

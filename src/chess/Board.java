@@ -75,7 +75,7 @@ public class Board {
 		System.out.println(" 0  1  2  3  4  5  6  7 ");
 	}
 	
-	//returns true if path is open, false if path is clear
+	//returns true if path is open, false if path is blocked
 	public boolean pathH( int x1, int y1, int x2, int y2 ) {
 		// Same row, move along column - same y, different x
 		System.out.println("pathH:");
@@ -101,57 +101,37 @@ public class Board {
 		return true;
 	}
 	
-	public boolean pathD( int r1, int c1, int r2, int c2 ) {
-		// r1 c1 r2 c2
-		// 1  3  2  4
-		//     c2 r2         c1 r1
-		//lower[4][2], higher[3][1] 
-					
-		
-		int lowerR = c1; int lowerC = r1; //lower[3][1]
-		int higherR = c2; int higherC = r2; //higher[4][2]
-		
-		if( c1 < c2 ) { //3<4
-			lowerR = c2; lowerC = r2; //lower[4][2]
-			higherR = c1; higherC = r1; 
+	public boolean pathD( int x1, int y1, int x2, int y2 ) {
+		int lowerR = y1; int lowerC = x1; 
+		int higherR = y2; int higherC = x2; 
+		if( y1 < y2 ) { 
+			lowerR = y2; lowerC = x2; 
+			higherR = y1; higherC = x1; 
 		}
-		//System.out.println("lower["+lowerR+"]["+lowerC+"]");
-		//System.out.println("higher["+higherR+"]["+higherC + "]" );
-
-		
 		boolean goingRight = true; // \
 		if ( lowerC < higherC ) {
 			goingRight = false; // /
 		}
-		//System.out.println("goingRight: " + goingRight);
-		
-		//going down
 		int k = 1;
 		int begin = higherR+1; // 3
 		int end = lowerR-1; // 2
-		//System.out.println("begin: " + begin);
-		//System.out.println("end: " + end);
+
 		for( int i = begin; i <= end; i++ ) {
 			if( goingRight == true ) {
 				if( board[i][higherC+k] != null ) { 
-					//System.out.println("pathD false1");
 					return false; 
 				}
 			}else {
 				if( board[i][higherC-k] != null ) { 
-					//System.out.println("pathD false2");
 					return false; 
 				}
 			}
 			k++;
 		}
-		if( board[c2][r2] != null && (board[c1][r1].color == board[c2][r2].color) ) {
-			//System.out.println("pathD false3");
+		if( board[y2][x2] != null && (board[y1][x1].color == board[y2][x2].color) ) {
 			return false;
 		}
-		//System.out.println("pathD true");
 		return true;
-
 	}
 	
 	public boolean pathV( int x1, int y1, int x2, int y2 ) {
@@ -186,7 +166,7 @@ public class Board {
 		
 	}
 	
-	public boolean valid( int r1, int c1, int r2, int c2, boolean color ) {
+	public boolean valid( int r1, int c1, int r2, int c2, char promote, boolean color ) {
 		/*
 		System.out.print("valid: ");
 		System.out.print(r1);
@@ -202,6 +182,9 @@ public class Board {
 			return false;
 		}
 		if( p.color != color ) {
+			return false;
+		}
+		if( check( r1, c1, r2, c2, promote, color) ) {
 			return false;
 		}
 		char type = p.type;
@@ -267,257 +250,143 @@ public class Board {
 		return true;
 	}
 
-	public boolean move( int x1, int y1, int x2, int y2 ) {
-		
-		/*
-		System.out.print("move: ");
-		System.out.print(x1);
-		System.out.print(y1);
-		System.out.print(x2);
-		System.out.println(y2);
-		*/
+	public void move( int x1, int y1, int x2, int y2, char c ) {
 		Piece p = board[y1][x1];
-		
-		//System.out.println("piece: " + p.name);
-		
 		board[y1][x1] = null;
 		board[y2][x2] = p;
 		
 		//default promote pawn g7 g8
-		if( y2 == 0 && p.type == 'P') {
-			board[y2][x2] = new Queen( true, "wQ" );
+		if( ( y2 == 0 || y2 == 7 ) && p.type == 'P' ) {
+			promote( x2, y2, c );
 		}
-		if( y2 == 7 && p.type == 'P') {
-			board[y2][x2] = new Queen( false, "bQ" );
-		}
-		
-		return true;
 	}
 
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
 		//checks if c is a valid piece to promote to
-		if (c != 'Q' || c != 'R' || c != 'N' || c != 'B') {
+		if (c != 'Q' || c != 'R' || c != 'N' || c != 'B' ) {
 			return false;
 		}
 		// 1st: if piece is a pawn. 2nd: if validate a pawn's move. 3rd: Final move is at the end of the board
 		if (board[x1][y1].type == 'P' && board[x1][y1].validMove(x1, y1, x2, y2) && (x2 == 0 || x2 == 7) ) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
+	
 	public void promote( int x, int y, char c ) {
 		//promote piece at x y to piece c
-		boolean pieceColor = board[x][y].color;
-		String pieceChar = board[x][y].name.substring(0, 1); //just want the first char, either 'b' or 'w'
+		boolean pieceColor = board[y][x].color;
+		String pieceChar = board[y][x].name.substring(0, 1); //just want the first char, either 'b' or 'w'
 		
 		if(c == 'R') {
-			board[x][y] =  new Rook(pieceColor, pieceChar+"R");
+			board[y][x] =  new Rook(pieceColor, pieceChar+"R");
 		}
 		else if(c == 'B') {
-			board[x][y] =  new Bishop(pieceColor, pieceChar+"B");
+			board[y][x] =  new Bishop(pieceColor, pieceChar+"B");
 		}
 		else if(c == 'N') {
-			board[x][y] =  new Knight(pieceColor, pieceChar+"N");
+			board[y][x] =  new Knight(pieceColor, pieceChar+"N");
 		}
 		else {
-			board[x][y] =  new Queen(pieceColor, pieceChar+"Q");
+			board[y][x] =  new Queen(pieceColor, pieceChar+"Q");
 		}
 		return;
 	}
 	
-	public boolean check( int x1, int y1, int x2, int y2, boolean pieceColor ) {
+	public boolean check( int x1, int y1, int x2, int y2, char promote, boolean pieceColor ) {
 		//check if move puts king of specified color in check		
+		int promoteMade = 0; //0-no promote, -1 black, 1 white
+		if( board[y1][x1].name == "bP" && y2 == 7 ){
+			promoteMade = -1;
+		}
+		if( board[y1][x1].name == "wP" && y2 == 0 ) {
+			promoteMade = 1;
+		}
 		
-		board[y2][x2] = board[y1][x1]; 
-		board[y1][x1] = null;
+		move( x1, y1, x2, y2, promote);
 		int kingX= 0, kingY= 0;
 			
 		//get king's coordinates
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Piece p = board[i][j];
+		for (int  y = 0; y < 8; y++) {
+			for (int x = 0; x < 8; x++) {
+				Piece p = board[y][x];
 				if( p != null && p.type == 'K' && p.color == pieceColor) {
-					kingX = i;
-					kingY = j;
+					kingY = y;
+					kingX = x;
 				}
 			}
 		}
 		
 		boolean check = false;
-		for( int i = 0; i < 8; i++ ) {
-			for( int j = 0; j < 8; j++ ) {
-				Piece p = board[i][j];
+		for( int y = 0; y < 8; y++ ) {
+			for( int x = 0; x < 8; x++ ) {
+				Piece p = board[y][x];
 				if( p != null && p.color == !pieceColor ) {
-					if( p.type == 'B' && valid(i, j, kingX, kingY, !pieceColor) ) {
+					if( p.type == 'B' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
 						check = true;
 					}
-					if( p.type == 'K' && valid(i, j, kingX, kingY, !pieceColor) ) {
+					if( p.type == 'K' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
 						check = true;
 					}
-					if( p.type == 'N' && valid(i, j, kingX, kingY, !pieceColor) ) {
+					if( p.type == 'N' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
 						check = true;
 					}
-					if( p.type == 'P' && valid(i, j, kingX, kingY, !pieceColor) ) {
+					if( p.type == 'P' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
 						check = true;
 					}
-					if( p.type == 'Q' && valid(i, j, kingX, kingY, !pieceColor) ) {
+					if( p.type == 'Q' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
 						check = true;
 					}
-					if( p.type == 'R' && valid(i, j, kingX, kingY, !pieceColor) ) {
+					if( p.type == 'R' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
 						check = true;
 					}
 				}
 			}
+		}
+		
+		if( promoteMade == 1 ) {
+			board[y2][x2] = new Pawn( true, "wp" );
+		}
+		if( promoteMade == -1 ) {
+			board[y2][x2] = new Pawn( true, "bp" );
 		}
 		board[y1][x1] = board[y2][x2]; 
 		board[y2][x2] = null;
 		return check;
-		
-		
-		/*
-		//System.out.println();
-		//check left horizontal of king
-		if(!pathH(kingX, kingY, kingX, 0)) {
-			for (int i = kingY-1; i >= 0; i--) {
-				if (board[kingX][i] != null) { 
-					if (board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
-						board[x1][y1] = board[x2][y2];
-						board[x2][y2] = null;
-						return false;
-					}
-					else {
-						break;
-					}
-				}
-			}
-		}
-		//check right horizontal of King
-		if(!pathH(kingX, kingY, kingX, 7)) {
-			for (int i = kingY+1; i <= 7; i++) {
-				if (board[kingX][i] != null) { 
-					if (board[kingX][i].color != pieceColor && (board[kingX][i].type == 'Q' || board[kingX][i].type == 'R')) {
-						board[x1][y1] = board[x2][y2];
-						board[x2][y2] = null;
-						return false;
-					}
-					else {
-						break;
-					}
-				}
-			}
-		}
-		//check upper vertical of King
-		if(!pathV(kingX, kingY, 0, kingY)) {
-			for (int i = kingX-1; i >= 0; i--) {
-				if (board[i][kingY] != null) { 
-					if(board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
-						board[x1][y1] = board[x2][y2];
-						board[x2][y2] = null;
-						return false;
-					}
-					else {
-						break;
-					}
-				}
-			}
-		}
-		//check lower vertical of King
-		if(!pathV(kingX, kingY, 7, kingY)) {
-			for (int i = kingX+1; i <= 7; i++) {
-				if (board[i][kingY] != null) { 
-					if(board[i][kingY].color != pieceColor && (board[i][kingY].type == 'Q' || board[i][kingY].type == 'R')) {
-						board[x1][y1] = board[x2][y2];
-						board[x2][y2] = null;
-						return false;
-					}
-					else {
-						break;
-					}
-				}
-			}
-		}
-		//check upper left diagonal
-		int tempY = kingY;
-		for (int i = kingX-1; i >= 0; i--) {
-			tempY--;
-			if (tempY >= 0 && board[i][tempY] != null) {
-				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
-					board[x1][y1] = board[x2][y2];
-					board[x2][y2] = null;
-					return false;
-				}
-				else {
-					break;
-				}
-			}
-		}
-		//check upper right diagonal
-		tempY = kingY;
-		for (int i = kingX-1; i >= 0; i--) {
-			tempY++;
-			if (tempY <= 7 && board[i][tempY] != null) {
-				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
-					board[x1][y1] = board[x2][y2];
-					board[x2][y2] = null;
-					return false;
-				}
-				else {
-					break;
-				}
-			}
-		}
-		//check lower left diagonal
-		tempY = kingY;
-		for (int i = kingX+1; i <= 7; i++) {
-			tempY--;
-			if (tempY >= 0 && board[i][tempY] != null) {
-				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
-					board[x1][y1] = board[x2][y2];
-					board[x2][y2] = null;
-					return false;
-				}
-				else {
-					break;
-				}
-			}
-		}
-		//check lower right diagonal
-		tempY = kingY;
-		for (int i = kingX+1; i <= 7; i++) {
-			tempY++;
-			if (tempY <= 7 && board[i][tempY] != null) {
-				if(board[i][tempY].color != pieceColor && (board[i][tempY].type == 'Q' || board[i][tempY].type == 'B')) {
-					board[x1][y1] = board[x2][y2];
-					board[x2][y2] = null;
-					return false;
-				}
-				else {
-					break;
-				}
-			}
-		}
-		board[y1][x1] = board[y2][x2];
-		board[y2][x2] = null;
-		return true; //finally return true if none of the false conditions happen
-		*/	
 	}
 	
 
 	public boolean checkmate( boolean color ) {
-		//checks king of color is in checkmate
-		//use check method
-		//find king - kingX, kingY
-		//use check( kingX, kingY , x2, y2 ) on all possible spots that the king can move to
-		//if all returns true, then checkmate
 		//use board[y][x] for coordinates, arrays go down then across
-		//while traversing using loops, x is still going across, y is going down
+		//pass to other functions as (x,y,x,y)
 		//note: king in middle of the board has 8 possible spots that it can move to, king in corner only has 3 
-
-		return false; //placeholder
+		
+		//get king of color's coordinates
+		int kingX= 0, kingY= 0;
+		for (int y = 0; y < 8; y++) {
+			for (int x = 0; x < 8; x++) {
+				Piece p = board[y][x];
+				if( p != null && p.type == 'K' && p.color == color) {
+					kingX = x;
+					kingY = y;
+				}
+			}
+		}
+		//literally overkilling until we find a faster method that doesnt take a lot of typing
+		//aka find formula for int y = 0; y < 8, x = 0; x < 8 to only go around King's squares + castling move
+		boolean nonCheck = false;
+		char c = '/'; 
+		for( int y = 0; y < 8; y++ ) {
+			for( int x = 0; x < 8; x++ ) {
+				if( valid( kingX, kingY, x, y, c, color) && !check( kingX, kingY, x, y, c, color ) ) {
+					nonCheck = true;
+				}
+			}
+		}
+		return nonCheck; //placeholder
 	}
+	
 	
 	/*need to somehow have access to previous move. After a scan in: set board.prevX1,board.prevY1, board.prevX2
 	 * board.prevY2, and board.prevType to the "g3 g2" that was entered. 

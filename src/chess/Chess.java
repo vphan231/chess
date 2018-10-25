@@ -36,14 +36,7 @@ public class Chess {
 			}
 			input = sc.nextLine();
 			
-			if( input.length() < 5 ) {
-				System.out.println("Illegal move, try again:");
-				valid = false;
-				continue;
-			}
-			
 			valid = validInput( b, input, wTurn);
-			System.out.println("validInput: " + valid);
 			if( valid == false ) {
 				System.out.println("Illegal move, try again:");
 				continue;
@@ -66,26 +59,25 @@ public class Chess {
 				continue;
 			}
 
-			//Need to work on this
 			valid = true;
-			if( input.length() == 11 ) {
+			if( input.contains("draw?")) {
 				drawProposed = true;
 			}
 			moveCom = convertArr(input); // moveCom[4] = x1, x1, x2, x2	
 			
-			/*
-			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], !wTurn); //checks if move puts other player in check
-			System.out.println("check: " + check);
-			if( check == true ) {
-				System.out.println("Check");
-			}				
-			*/
-			
-			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3]);
+			char promote = '/';
 			if( input.length() == 7 ) {
-				b.promote(moveCom[2], moveCom[3], input.charAt(6));
+				promote = input.charAt(6);
+			}
+		
+			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
+			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
+			if( check == true ) {
+				System.out.println("check");
 			}
 			
+			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
+
 			/*
 			if( b.checkmate() == true ) { 
 				System.out.println("Checkmate");
@@ -111,6 +103,11 @@ public class Chess {
 	
 
 	public static boolean validInput( Board b, String str, boolean color ) {
+		
+		if( str.length() < 5 ) {
+			return false;
+		}
+		
 		if( str.equals("draw") || str.equals("resign") ) {
 			return true;
 		}
@@ -126,15 +123,13 @@ public class Chess {
 		}
 		
 		int[] moveCom = convertArr( str );
-	
+		
+		char promote = '/';
 		if( str.length() == 7 ) { //g7 g8 Q
-			char c = str.charAt(6);
-			if( c!='Q' && c!='N' && c!='R' && c!='B' ) {
-				return false;
-			}
-			return b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], str.charAt(6));
+			promote = str.charAt(6);
+			return b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 		}
-		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3], color );
+		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, color );
 	}
 	
 	public static int[] convertArr( String moveStr ) {
