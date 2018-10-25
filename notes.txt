@@ -1,3 +1,11 @@
+10/24 enpassant - V
+	I made the following fields in baord to record the last move.
+	public int prevX1;
+	public int prevY1;
+	public int prevX2;
+	public int prevY2;
+	public char prevType;
+	
 Been Debugging - lots of bugs
 
 	Testing

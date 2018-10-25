@@ -4,6 +4,11 @@ package chess;
 public class Board {
 
 	public Piece[][] board;
+	public int prevX1;
+	public int prevY1;
+	public int prevX2;
+	public int prevY2;
+	public char prevType;
 	
 	public Board() {
 		this.board = new Piece[8][8];
@@ -465,6 +470,42 @@ public class Board {
 		//note: king in middle of the board has 8 possible spots that it can move to, king in corner only has 3 
 
 		return false; //placeholder
+	}
+	
+	/*need to somehow have access to previous move. After a scan in: set board.prevX1,board.prevY1, board.prevX2
+	 * board.prevY2, and board.prevType to the "g3 g2" that was entered. 
+	 */
+	public boolean enpassant(int x1, int y1, int x2, int y2, char type) {
+		//1)check if both are pawns. 2)check if the prev move was a double move. 
+		if(prevType != 'P' || type != 'P' || prevX1 != prevX2+2 || prevX1 != prevX2-2) {
+			return false;
+		}
+		
+		if(prevX1+1 > 7) {//out of bounds. just check left side (if they are next to each other)
+			if(board[prevY1][prevX1-1] == board[y1][x1]) {
+				//yes both pawns are right next to each other.
+				//check if the movement (x2,y2) is the correct movement
+				if(y2 == prevY2 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
+					return true;
+				}
+				
+			}
+		}
+		else if(prevX1-1 < 0) {//out of bounds. just check right side
+			if(board[prevY1][prevX1+1] == board[y1][x1]) {
+				if(y2 == prevY2 && board[y2][x2] == null) {
+					return true;
+				}
+			}
+		}
+		else {//check both left and right
+			if(board[prevY1][prevX1+1] == board[y1][x1] || board[prevY1][prevX1-1] == board[y1][x1]) {
+				if(y2 == prevY2 && board[y2][x2] == null) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }
