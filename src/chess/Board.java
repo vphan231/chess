@@ -455,7 +455,6 @@ public class Board {
 		board[y2][x2] = null;
 		return true; //finally return true if none of the false conditions happen
 		
-		
 	}
 	
 
@@ -482,7 +481,7 @@ public class Board {
 		}
 		
 		if(prevX1+1 > 7) {//out of bounds. just check left side (if they are next to each other)
-			if(board[prevY1][prevX1-1] == board[y1][x1]) {
+			if(board[prevY2][prevX2-1] == board[y1][x1]) {
 				//yes both pawns are right next to each other.
 				//check if the movement (x2,y2) is the correct movement
 				if(y2 == prevY2 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
@@ -492,20 +491,45 @@ public class Board {
 			}
 		}
 		else if(prevX1-1 < 0) {//out of bounds. just check right side
-			if(board[prevY1][prevX1+1] == board[y1][x1]) {
+			if(board[prevY2][prevX2+1] == board[y1][x1]) {
 				if(y2 == prevY2 && board[y2][x2] == null) {
 					return true;
 				}
 			}
 		}
 		else {//check both left and right
-			if(board[prevY1][prevX1+1] == board[y1][x1] || board[prevY1][prevX1-1] == board[y1][x1]) {
+			if(board[prevY2][prevX2+1] == board[y1][x1] || board[prevY1][prevX1-1] == board[y1][x1]) {
 				if(y2 == prevY2 && board[y2][x2] == null) {
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	public boolean castling(int x1, int y1, int x2, int y2, boolean pieceColor) {
+		int kingX= 0, kingY=0;
+		//get king's coordinates
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece p = board[i][j];
+				if( p != null ) {
+					//System.out.print( p.name + " ");
+					//System.out.println(p.type );
+				}
+				if( p != null && p.type == 'K' && p.color == pieceColor) {
+					kingX = i;
+					kingY = j;
+					//System.out.println();
+					System.out.println("King found at: " + kingX + ", " + kingY);
+				}
+			}
+		}
+		/*king and rook cannot move yet
+		 * cannot castle while in check, through a check(ex: king moves 2 spot to the left but the 1st spot it
+		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
+		 */
+		return true;//placeholder
 	}
 	
 }
