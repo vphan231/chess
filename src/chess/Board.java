@@ -139,9 +139,9 @@ public class Board {
 		return true;
 	}
 	
-	public boolean valid( int r1, int c1, int r2, int c2, char promote, boolean color ) {
+	public boolean valid( int x1, int y1, int x2, int y2, char promote, boolean color ) {
 
-		Piece p = board[c1][r1];
+		Piece p = board[y1][x1];
 		if( p == null ) { //no piece to move
 			return false;
 		}
@@ -153,7 +153,8 @@ public class Board {
 		boolean output = true;
 		
 		//~~~~~~~~~~~~~~~~~~~~~~~Enpassant and Castling~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 if( p.type = 'K' && isCastlingMove   ){
+		//right or left 2 places 
+		if( p.type == 'K' && Math.abs(x2-x1) == 2  ){
 			 if( !validCastlingMove ) {
 				 return false;
 			 }
@@ -164,7 +165,7 @@ public class Board {
 		 //~~~~~~~~~~~~~~~~~~~~~~~Enpassant and Castling~~~~~~~~~~~~~~~~~~~~~~~~~~
 		 
 		 }else { //regular moves
-			if ( !p.validMove(r1, c1, r2, c2) ) {
+			if ( !p.validMove(x1, y1, x2, y2) ) {
 				return false;
 			}
 		
@@ -173,14 +174,14 @@ public class Board {
 			boolean d = false;
 		
 			int direction; //1-h, 2-v, 3-d
-			if( c1 == c2 ) {
-				h = pathH( r1, c1, r2, c2 );
+			if( y1 == y2 ) {
+				h = pathH( x1, y1, x2, y2 );
 				direction = 1;
-			}else if( r1 == r2 ) {
-				v = pathV( r1, c1, r2, c2 );
+			}else if( x1 == x2 ) {
+				v = pathV( x1, y1, x2, y2 );
 				direction = 2;
 			}else { 
-				d = pathD( r1, c1, r2, c2 );
+				d = pathD( x1, y1, x2, y2 );
 				direction = 3; 
 			}
 		
@@ -195,11 +196,11 @@ public class Board {
 			}
 			if( type == 'P' ) {
 				if( direction == 3) {
-					if( board[c2][r2] != null ) {
+					if( board[y2][x2] != null ) {
 						output = d;
 					}
 					output = false;
-				}else if( board[c2][r2] != null ) {
+				}else if( board[y2][x2] != null ) {
 					output = false;
 				}else {
 					output = v;
@@ -222,7 +223,7 @@ public class Board {
 		if( output == false ) {
 			return output;
 		}
-		if( check( r1, c1, r2, c2, promote, color) ) { //moves puts own king in check
+		if( check( x1, y1, x2, y2, promote, color) ) { //moves puts own king in check
 			return false;
 		}
 		return output;
@@ -231,16 +232,18 @@ public class Board {
 	public void move( int x1, int y1, int x2, int y2, char c ) {
 		Piece p = board[y1][x1];
 		//~~~~~~~~~~~~~~~~~~~~~~~~~ENPASSANT AND CASTLING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		/*
-		 if( p.type == 'K' && isCastling ){
+		
+		 if( p.type == 'K' && Math.abs(x2-x1) == 2 ){
 		 	castlingMove - may or may not be a different method
+		 	return;
 		 }
 		 */
-		/*
+		
 		if( p.type == 'P' && isEnpassant ){
 			enpassantMove - may or may not be a different method
+			return;
 		}
-		*/
+		
 		//~~~~~~~~~~~~~~~~~~~~~~~~~ENPASSANT AND CASTLING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 		board[y1][x1] = null;
@@ -342,6 +345,7 @@ public class Board {
 		}
 		return nonCheck; 
 	}
+	
 	
 	
 	/*need to somehow have access to previous move. After a scan in: set board.prevX1,board.prevY1, board.prevX2

@@ -72,24 +72,25 @@ public class Chess {
 		
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
-			if( check == true ) {
-				System.out.println("check");
-			}
 			
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3];
-			/*
-			if( b.checkmate() == true ) { 
-				System.out.println("Checkmate");
-				gameEnded = true;
-				if( wTurn ) {
-					System.out.println("White wins");
-				}else {
-					System.out.println("Black wins");
+			
+			if( b.checkmate( !wTurn ) == true ) {
+				if( check == true ) {
+					System.out.println("Checkmate");
+					if( wTurn ) {
+						System.out.println("White wins");
+					}else {
+						System.out.println("Black wins");
+					}
+				}if( check == false ) {
+					System.out.println("Stalemate");
+					System.out.println("draw");
 				}
+				gameEnded = true;	
 				continue;
 			}
-			*/
 			
 			//Alternates players
 			if( wTurn ) {

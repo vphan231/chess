@@ -46,5 +46,8 @@ public class King extends Piece {
 		else {
 			return false;
 		}
+		
+		//castling moves??
+		
 	}
 }
