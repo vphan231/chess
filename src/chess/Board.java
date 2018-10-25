@@ -303,8 +303,8 @@ public class Board {
 		System.out.println( "color: " + pieceColor);
 		*/
 		
-		board[x2][y2] = board[x1][y1]; 
-		board[x1][y1] = null;
+		board[y2][x2] = board[y1][x1]; 
+		board[y1][x1] = null;
 		//print();
 	
 		int kingX= 0, kingY= 0;
@@ -326,8 +326,6 @@ public class Board {
 			}
 		}
 		//System.out.println();
-
-		
 		//check left horizontal of king
 		if(!pathH(kingX, kingY, kingX, 0)) {
 			for (int i = kingY-1; i >= 0; i--) {
@@ -451,6 +449,7 @@ public class Board {
 		board[y1][x1] = board[y2][x2];
 		board[y2][x2] = null;
 		return true; //finally return true if none of the false conditions happen
+		
 		
 	}
 	
