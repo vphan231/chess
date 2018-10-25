@@ -507,29 +507,36 @@ public class Board {
 		return false;
 	}
 	
+	/*I'm going to have to make an update to Rook and King's field: add boolean moveYet = false. We will set it to
+	 * true when we move a rook or king. We might have to do piece to have this field.
+	 */
 	public boolean castling(int x1, int y1, int x2, int y2, boolean pieceColor) {
-		int kingX= 0, kingY=0;
-		//get king's coordinates
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				Piece p = board[i][j];
-				if( p != null ) {
-					//System.out.print( p.name + " ");
-					//System.out.println(p.type );
-				}
-				if( p != null && p.type == 'K' && p.color == pieceColor) {
-					kingX = i;
-					kingY = j;
-					//System.out.println();
-					System.out.println("King found at: " + kingX + ", " + kingY);
-				}
-			}
-		}
 		/*king and rook cannot move yet
-		 * cannot castle while in check, through a check(ex: king moves 2 spot to the left but the 1st spot it
+		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
 		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
 		 */
-		return true;//placeholder
+		int kingX= 0, kingY=0;
+		
+		if(pieceColor = false) {
+			kingX=0;
+			kingY=4;
+		}
+		else {
+			kingX=7;
+			kingY=4;
+		}
+		
+		if(pieceColor == false && !board[kingX][kingY].moveYet) {//piece to have field moveYet?
+			//1) current spot-> !check 
+			//2) 1 spot left or right depending on which way he/she wants to castle-> !check
+			//3) 2 spot left or right depending on direction of castle(where king will be)-> !check
+			//if all 3 scenarios are true -> return true;
+		}
+		if(pieceColor == true && !board[kingX][kingY].moveYet) {
+			//same as above
+		}
+
+		return false;//placeholder
 	}
 	
 }
