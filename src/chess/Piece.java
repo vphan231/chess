@@ -5,6 +5,7 @@ public abstract class Piece {
 	char type;
 	boolean color;
 	String name;
+	boolean moveYet;
 	
 	//Fields
 	//Boolean Color

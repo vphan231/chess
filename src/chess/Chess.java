@@ -77,7 +77,7 @@ public class Chess {
 			}
 			
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
-
+			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3];
 			/*
 			if( b.checkmate() == true ) { 
 				System.out.println("Checkmate");

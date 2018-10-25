@@ -7,6 +7,7 @@ public class King extends Piece {
 		this.type = 'K';
 		this.color = color;
 		this.name = name;
+		this.moveYet = false;
 	}
 	
 	boolean validMove(int x1, int y1, int x2, int y2) {

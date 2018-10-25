@@ -13,7 +13,6 @@ public class Board {
 	public Board() {
 		this.board = new Piece[8][8];
 	}
-	
 	public void initialize() {
 		//black == false; white == true
 		//create black pieces
@@ -42,7 +41,6 @@ public class Board {
 		}
 		return;
 	}
-	
 	public void print() {
 		int colDis = 8;
 		for( int i = 0; i < 8; i++ ) {
@@ -78,18 +76,10 @@ public class Board {
 	//returns true if path is open, false if path is blocked
 	public boolean pathH( int x1, int y1, int x2, int y2 ) {
 		// Same row, move along column - same y, different x
-		System.out.println("pathH:");
-		System.out.print(x1);
-		System.out.print(y1);
-		System.out.print(x2);
-		System.out.println(y2);
-		
 		int begin = x1+1; int end = x2-1; // y1 <= y2
 		if( x1 > x2 ){
 			begin = x2+1; end = x1-1;
 		}
-		System.out.println("begin: " + begin );
-		System.out.println("End: " + end );
 		for( int i = begin; i <= end; i++ ) {
 			if( board[y1][i] !=  null ) {
 				return false;
@@ -100,7 +90,22 @@ public class Board {
 		}
 		return true;
 	}
-	
+	public boolean pathV( int x1, int y1, int x2, int y2 ) {
+		// Same column, move along row - same x, different y
+		int begin = y1+1; int end = y2-1; // y1 <= y2
+		if( y1 > y2 ){
+			begin = y2+1; end = y1-1;
+		}
+		for( int i = begin; i <= end; i++ ) {
+			if( board[i][x1] !=  null ) {
+				return false;
+			}
+		}
+		if( board[y2][x2] != null && (board[y2][x2].color == board[y1][x1].color) ){
+			return false;
+		}
+		return true;
+	}
 	public boolean pathD( int x1, int y1, int x2, int y2 ) {
 		int lowerR = y1; int lowerC = x1; 
 		int higherR = y2; int higherC = x2; 
@@ -134,131 +139,121 @@ public class Board {
 		return true;
 	}
 	
-	public boolean pathV( int x1, int y1, int x2, int y2 ) {
-		// x1 y1 x2 y2
-		// 0  6  0  5
-		
-		//System.out.println("pathV:");
-
-		// Same column, move along row - same x, different y
-		int begin = y1+1; int end = y2-1; // y1 <= y2
-		if( y1 > y2 ){
-			begin = y2+1; end = y1-1;
-		}
-		//System.out.println("begin: " + begin );
-		//System.out.println("End: " + end );
-		for( int i = begin; i <= end; i++ ) {
-			//System.out.println("board[" + i + "][" + x1 + "]");
-			if( board[i][x1] !=  null ) {
-				//System.out.println(board[y1][i].name);
-				//System.out.println("pathV: false1");
-				return false;
-			}
-		}
-		if( board[y2][x2] != null && (board[y2][x2].color == board[y1][x1].color) ){
-			//System.out.println("pathV: false2");
-			return false;
-		}
-		//System.out.println("pathV: true");
-		return true;
-		
-		
-		
-	}
-	
 	public boolean valid( int r1, int c1, int r2, int c2, char promote, boolean color ) {
-		/*
-		System.out.print("valid: ");
-		System.out.print(r1);
-		System.out.print(c1);
-		System.out.print(r2);
-		System.out.println(c2);
-		*/
-		// r1 c1 r2 c2
-		// 0  6  0  5
+
 		Piece p = board[c1][r1];
-		//System.out.println(p.name);
 		if( p == null ) { //no piece to move
 			return false;
 		}
-		if( p.color != color ) {
+		if( p.color != color ) { //trying to move the other color's piece
 			return false;
 		}
-		if( check( r1, c1, r2, c2, promote, color) ) {
-			return false;
-		}
+		
 		char type = p.type;
-		//System.out.println("piece: " + p.name);
-		//System.out.println("type: " + type );
-		boolean spec = p.validMove(r1, c1, r2, c2);
-		if( spec == false ) {
-			System.out.println("special");
+		boolean output = true;
+		
+		//~~~~~~~~~~~~~~~~~~~~~~~Enpassant and Castling~~~~~~~~~~~~~~~~~~~~~~~~~~
+		 if( p.type = 'K' && isCastlingMove   ){
+			 if( !validCastlingMove ) {
+				 return false;
+			 }
+		 }else if(  p.type == 'P' && isEnpassant ){
+		 	if( !validEnpassant ) {
+		 		return false
+		 	}
+		 //~~~~~~~~~~~~~~~~~~~~~~~Enpassant and Castling~~~~~~~~~~~~~~~~~~~~~~~~~~
+		 
+		 }else { //regular moves
+			if ( !p.validMove(r1, c1, r2, c2) ) {
+				return false;
+			}
+		
+			boolean h = false;
+			boolean v = false;
+			boolean d = false;
+		
+			int direction; //1-h, 2-v, 3-d
+			if( c1 == c2 ) {
+				h = pathH( r1, c1, r2, c2 );
+				direction = 1;
+			}else if( r1 == r2 ) {
+				v = pathV( r1, c1, r2, c2 );
+				direction = 2;
+			}else { 
+				d = pathD( r1, c1, r2, c2 );
+				direction = 3; 
+			}
+		
+			if( type == 'B') { 
+				output = d;
+			}
+			if( type == 'K' ) {
+				switch(direction) {
+					case 1: output = h;
+					case 2: output = v;
+				}
+			}
+			if( type == 'P' ) {
+				if( direction == 3) {
+					if( board[c2][r2] != null ) {
+						output = d;
+					}
+					output = false;
+				}else if( board[c2][r2] != null ) {
+					output = false;
+				}else {
+					output = v;
+				}
+			}
+			if( type == 'Q' ) {
+				switch(direction) {
+					case 1: output = h;
+					case 2: output = v;
+					case 3: output = d;
+				}
+			}
+			if( type == 'R' ) {
+				switch( direction ) {
+				case 1: output = h;
+				case 2: output = v;
+				}
+			}
+		}
+		if( output == false ) {
+			return output;
+		}
+		if( check( r1, c1, r2, c2, promote, color) ) { //moves puts own king in check
 			return false;
 		}
-		
-		boolean h = false;
-		boolean v = false;
-		boolean d = false;
-		
-		int direction; //1-h, 2-v, 3-d
-		if( c1 == c2 ) {
-			h = pathH( r1, c1, r2, c2 );
-			direction = 1;
-		}else if( r1 == r2 ) {
-			v = pathV( r1, c1, r2, c2 );
-			direction = 2;
-		}else { 
-			d = pathD( r1, c1, r2, c2 );
-			direction = 3; //has to be diagonal otherwise spec should've already returned false
-		}
-		//System.out.println("Direction: " + direction );
-		
-		if( type == 'B') { //Bishop
-			return d;
-		}
-		if( type == 'K' ) {
-			switch(direction) {
-				case 1: return h;
-				case 2: return v;
-			}
-		}
-		if( type == 'P' ) {
-			if( direction == 3) {
-				if( board[c2][r2] != null ) {
-					return d;
-				}
-				return false;
-			}
-			if( board[c2][r2] != null ) {
-				return false;
-			}
-			return v;
-		}
-		if( type == 'Q' ) {
-			switch(direction) {
-				case 1: return h;
-				case 2: return v;
-				case 3: return d;
-			}
-		}
-		if( type == 'R' ) {
-			switch( direction ) {
-			case 1: return h;
-			case 2: return v;
-			}
-		}
-		return true;
+		return output;
 	}
 
 	public void move( int x1, int y1, int x2, int y2, char c ) {
 		Piece p = board[y1][x1];
+		//~~~~~~~~~~~~~~~~~~~~~~~~~ENPASSANT AND CASTLING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		/*
+		 if( p.type == 'K' && isCastling ){
+		 	castlingMove - may or may not be a different method
+		 }
+		 */
+		/*
+		if( p.type == 'P' && isEnpassant ){
+			enpassantMove - may or may not be a different method
+		}
+		*/
+		//~~~~~~~~~~~~~~~~~~~~~~~~~ENPASSANT AND CASTLING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
 		board[y1][x1] = null;
 		board[y2][x2] = p;
+		if( p.type == 'K' || p.type == 'R') {
+			p.moveYet = true;
+		}
 		
-		//default promote pawn g7 g8
+		//pawn needs to be promoted
 		if( ( y2 == 0 || y2 == 7 ) && p.type == 'P' ) {
 			promote( x2, y2, c );
 		}
+		return;
 	}
 
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
@@ -295,19 +290,13 @@ public class Board {
 	}
 	
 	public boolean check( int x1, int y1, int x2, int y2, char promote, boolean pieceColor ) {
-		//check if move puts king of specified color in check		
-		int promoteMade = 0; //0-no promote, -1 black, 1 white
-		if( board[y1][x1].name == "bP" && y2 == 7 ){
-			promoteMade = -1;
-		}
-		if( board[y1][x1].name == "wP" && y2 == 0 ) {
-			promoteMade = 1;
-		}
+		//check if move puts king of specified color in check
 		
+		Piece[][] copy = this.board; 
 		move( x1, y1, x2, y2, promote);
-		int kingX= 0, kingY= 0;
-			
+		
 		//get king's coordinates
+		int kingX= 0, kingY= 0;	
 		for (int  y = 0; y < 8; y++) {
 			for (int x = 0; x < 8; x++) {
 				Piece p = board[y][x];
@@ -317,74 +306,41 @@ public class Board {
 				}
 			}
 		}
-		
+		//check if any enemy pieces has valid moves to king
 		boolean check = false;
 		for( int y = 0; y < 8; y++ ) {
 			for( int x = 0; x < 8; x++ ) {
 				Piece p = board[y][x];
-				if( p != null && p.color == !pieceColor ) {
-					if( p.type == 'B' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
-						check = true;
-					}
-					if( p.type == 'K' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
-						check = true;
-					}
-					if( p.type == 'N' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
-						check = true;
-					}
-					if( p.type == 'P' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
-						check = true;
-					}
-					if( p.type == 'Q' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
-						check = true;
-					}
-					if( p.type == 'R' && valid(x, y, kingX, kingY, promote, !pieceColor) ) {
-						check = true;
-					}
+				if( p != null && p.color == !pieceColor &&  valid(x, y, kingX, kingY, promote, !pieceColor) ) {
+					check = true;
 				}
 			}
 		}
 		
-		if( promoteMade == 1 ) {
-			board[y2][x2] = new Pawn( true, "wp" );
-		}
-		if( promoteMade == -1 ) {
-			board[y2][x2] = new Pawn( true, "bp" );
-		}
-		board[y1][x1] = board[y2][x2]; 
-		board[y2][x2] = null;
+		this.board = copy; //reverts all moves
 		return check;
 	}
 	
-
 	public boolean checkmate( boolean color ) {
-		//use board[y][x] for coordinates, arrays go down then across
-		//pass to other functions as (x,y,x,y)
-		//note: king in middle of the board has 8 possible spots that it can move to, king in corner only has 3 
-		
-		//get king of color's coordinates
-		int kingX= 0, kingY= 0;
-		for (int y = 0; y < 8; y++) {
-			for (int x = 0; x < 8; x++) {
-				Piece p = board[y][x];
-				if( p != null && p.type == 'K' && p.color == color) {
-					kingX = x;
-					kingY = y;
-				}
-			}
-		}
-		//literally overkilling until we find a faster method that doesnt take a lot of typing
-		//aka find formula for int y = 0; y < 8, x = 0; x < 8 to only go around King's squares + castling move
-		boolean nonCheck = false;
-		char c = '/'; 
-		for( int y = 0; y < 8; y++ ) {
+		//have to check if any piece on board can get the king out of check by killing/blocking/the king moving itself 
+		//only checkmate if there is no moves for any piece that gets the king out of check
+		boolean nonCheck = false; //assume there is no noncheck moves until noncheck move is found
+		for( int y = 0; y < 8; y++ ) { 
 			for( int x = 0; x < 8; x++ ) {
-				if( valid( kingX, kingY, x, y, c, color) && !check( kingX, kingY, x, y, c, color ) ) {
-					nonCheck = true;
+				//finds every piece of color on board
+				if( board[y][x] != null && board[y][x].color == color ) {
+					//checks every space on board and see if its a valid move for that piece
+					for( int y2 = 0; y2 < 8; y2++ ) {
+						for( int x2 = 0; x2 < 8; x2++ ) {
+							if( valid( x, y, x2, y2, '/', color ) ) {
+								return true;
+							}
+						}
+					}
 				}
 			}
 		}
-		return nonCheck; //placeholder
+		return nonCheck; 
 	}
 	
 	

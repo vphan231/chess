@@ -6,6 +6,7 @@ public class Rook extends Piece{
 		this.type = 'R';
 		this.color = color;
 		this.name = name;
+		this.moveYet = false;
 	}
 	
 	boolean validMove(int x1, int y1, int x2, int y2) {
