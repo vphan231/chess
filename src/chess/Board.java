@@ -234,13 +234,35 @@ public class Board {
 		//~~~~~~~~~~~~~~~~~~~~~~~~~ENPASSANT AND CASTLING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 		 if( p.type == 'K' && Math.abs(x2-x1) == 2 ){
-		 	castlingMove - may or may not be a different method
+		 	//castlingMove - may or may not be a different method
+			board[y2][x2] = p;
+			board[y1][x1] = null;
+			Piece p2 = null;
+			if(board[y2][x2-2].type == 'R') {
+				p2 = board[y2][x2-2];
+				board[y2][x2+1] = p;
+				board[y2][x2-2] = null;
+			}
+			else if(board[y2][x2+1].type == 'R') {
+				p2 = board[y2][x2+1];
+				board[y2][x2-1] = p;
+				board[y2][x2+1] = null;
+			}
+			p.moveYet = true;
+			p2.moveYet = true;
 		 	return;
-		 }
-		 */
+		}
 		
 		if( p.type == 'P' && y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
-			enpassantMove - may or may not be a different method
+			//enpassantMove - may or may not be a different method
+			board[y2][x2] = p;
+			board[y1][x1] = null;
+			if(p.color == false) {
+				board[y2-1][x2] = null;
+			}
+			else {
+				board[y2+1][x2] = null;
+			}
 			return;
 		}
 		
@@ -390,7 +412,7 @@ public class Board {
 		}
 		//castling to black's left
 		if(pieceColor == false && castleRight == false && board[0][0].type == 'R' && board[0][0].moveYet == false 
-		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(0,0,0,4) == true) {
+		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(0,0,4,0) == true) {
 			//1) current spot-> !check 
 			//2) 1 spot left or right depending on which way he/she wants to castle-> !check
 			//3) 2 spot left or right depending on direction of castle(where king will be)-> !check
@@ -401,21 +423,21 @@ public class Board {
 		}
 		//castling to black's right
 		else if(pieceColor == false && castleRight == true && board[0][7].type == 'R' && board[0][7].moveYet == false 
-		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(0,7,0,4) == true) {
+		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(7,0,4,0) == true) {
 			if(!check(4,0,4,0,'/',pieceColor) && !check(4,0,5,0,'/',pieceColor) && !check(4,0,6,0,'/',pieceColor)) {
 				return true;
 			}
 		}
 		//castling to white's left
 		else if(pieceColor == true && castleRight == false && board[7][0].type == 'R' && board[7][0].moveYet == false 
-		&& board[7][4].type == 'K' && board[7][4].moveYet == false && pathH(7,0,7,4) == true) {
+		&& board[7][4].type == 'K' && board[7][4].moveYet == false && pathH(0,7,4,7) == true) {
 			if(!check(4,7,4,7,'/',pieceColor) && !check(4,7,3,7,'/',pieceColor) && !check(4,7,2,7,'/',pieceColor)) {
 				return true;
 			}
 		}
 		//castling to white's right
 		else if(pieceColor == true && castleRight == true && board[7][7].type == 'R' && board[7][7].moveYet == false 
-		&& board[7][4].type == 'K' && board[7][4].moveYet == false && pathH(7,7,7,4) == true) {
+		&& board[7][4].type == 'K' && board[7][4].moveYet == false && pathH(7,7,4,7) == true) {
 			if(!check(4,7,4,7,'/',pieceColor) && !check(4,7,5,7,'/',pieceColor) && !check(4,7,6,7,'/',pieceColor)) {
 				return true;
 			}
