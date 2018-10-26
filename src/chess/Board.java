@@ -155,12 +155,12 @@ public class Board {
 		//~~~~~~~~~~~~~~~~~~~~~~~Enpassant and Castling~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//right or left 2 places 
 		if( p.type == 'K' && Math.abs(x2-x1) == 2  ){
-			 if( !validCastlingMove ) {
+			 if( !validCastling(x1,y1,x2,y2,color) ) {
 				 return false;
 			 }
-		 }else if(  p.type == 'P' && isEnpassant ){
-		 	if( !validEnpassant ) {
-		 		return false
+		 }else if(  p.type == 'P' && y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
+		 	if( !validEnpassant(x1,y1,x2,y2,type) ) {
+		 		return false;
 		 	}
 		 //~~~~~~~~~~~~~~~~~~~~~~~Enpassant and Castling~~~~~~~~~~~~~~~~~~~~~~~~~~
 		 
@@ -239,7 +239,7 @@ public class Board {
 		 }
 		 */
 		
-		if( p.type == 'P' && isEnpassant ){
+		if( p.type == 'P' && y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
 			enpassantMove - may or may not be a different method
 			return;
 		}
@@ -346,37 +346,32 @@ public class Board {
 		return nonCheck; 
 	}
 	
-	
-	
-	/*need to somehow have access to previous move. After a scan in: set board.prevX1,board.prevY1, board.prevX2
-	 * board.prevY2, and board.prevType to the "g3 g2" that was entered. 
-	 */
-	public boolean enpassant(int x1, int y1, int x2, int y2, char type) {
-		//1)check if both are pawns. 2)check if the prev move was a double move. 
-		if(prevType != 'P' || type != 'P' || prevX1 != prevX2+2 || prevX1 != prevX2-2) {
+	public boolean validEnpassant(int x1, int y1, int x2, int y2, char type) {
+		//1)check if both are pawns. 2)check if the prev move was a double move vertical. 
+		if(prevType != 'P' || type != 'P' || Math.abs(prevY2-prevY1) == 2) {
 			return false;
 		}
-		
-		if(prevX1+1 > 7) {//out of bounds. just check left side (if they are next to each other)
+		//move() not called, so piece did not move yet. Compare initial move (x1,y1) with final move (prevX2,prevY2)
+		if(prevX2+1 > 7) {//out of bounds. just check left side (if they are next to each other)
 			if(board[prevY2][prevX2-1] == board[y1][x1]) {
 				//yes both pawns are right next to each other.
 				//check if the movement (x2,y2) is the correct movement
-				if(y2 == prevY2 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
+				if(y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
 					return true;
 				}
 				
 			}
 		}
-		else if(prevX1-1 < 0) {//out of bounds. just check right side
+		else if(prevX2-1 < 0) {//out of bounds. just check right side
 			if(board[prevY2][prevX2+1] == board[y1][x1]) {
-				if(y2 == prevY2 && board[y2][x2] == null) {
+				if(y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) {
 					return true;
 				}
 			}
 		}
 		else {//check both left and right
 			if(board[prevY2][prevX2+1] == board[y1][x1] || board[prevY1][prevX1-1] == board[y1][x1]) {
-				if(y2 == prevY2 && board[y2][x2] == null) {
+				if(y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) {
 					return true;
 				}
 			}
@@ -384,36 +379,51 @@ public class Board {
 		return false;
 	}
 	
-	/*I'm going to have to make an update to Rook and King's field: add boolean moveYet = false. We will set it to
-	 * true when we move a rook or king. We might have to do piece to have this field.
-	 */
-	public boolean castling(int x1, int y1, int x2, int y2, boolean pieceColor) {
+	public boolean validCastling(int x1, int y1, int x2, int y2, boolean pieceColor) {
 		/*king and rook cannot move yet
 		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
 		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
 		 */
-		int kingX= 0, kingY=0;
-		
-		if(pieceColor = false) {
-			kingX=0;
-			kingY=4;
+		boolean castleRight = false;
+		if(x2 - x1 > 0) {
+			castleRight = true;
 		}
-		else {
-			kingX=7;
-			kingY=4;
-		}
-		
-		if(pieceColor == false && !board[kingX][kingY].moveYet) {//piece to have field moveYet?
+		//castling to black's left
+		if(pieceColor == false && castleRight == false && board[0][0].type == 'R' && board[0][0].moveYet == false 
+		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(0,0,0,4) == true) {
 			//1) current spot-> !check 
 			//2) 1 spot left or right depending on which way he/she wants to castle-> !check
 			//3) 2 spot left or right depending on direction of castle(where king will be)-> !check
 			//if all 3 scenarios are true -> return true;
+			if(!check(4,0,4,0,'/',pieceColor) && !check(4,0,3,0,'/',pieceColor) && !check(4,0,2,0,'/',pieceColor)) {
+				return true;
+			}
 		}
-		if(pieceColor == true && !board[kingX][kingY].moveYet) {
-			//same as above
+		//castling to black's right
+		else if(pieceColor == false && castleRight == true && board[0][7].type == 'R' && board[0][7].moveYet == false 
+		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(0,7,0,4) == true) {
+			if(!check(4,0,4,0,'/',pieceColor) && !check(4,0,5,0,'/',pieceColor) && !check(4,0,6,0,'/',pieceColor)) {
+				return true;
+			}
 		}
-
-		return false;//placeholder
+		//castling to white's left
+		else if(pieceColor == true && castleRight == false && board[7][0].type == 'R' && board[7][0].moveYet == false 
+		&& board[7][4].type == 'K' && board[7][4].moveYet == false && pathH(7,0,7,4) == true) {
+			if(!check(4,7,4,7,'/',pieceColor) && !check(4,7,3,7,'/',pieceColor) && !check(4,7,2,7,'/',pieceColor)) {
+				return true;
+			}
+		}
+		//castling to white's right
+		else if(pieceColor == true && castleRight == true && board[7][7].type == 'R' && board[7][7].moveYet == false 
+		&& board[7][4].type == 'K' && board[7][4].moveYet == false && pathH(7,7,7,4) == true) {
+			if(!check(4,7,4,7,'/',pieceColor) && !check(4,7,5,7,'/',pieceColor) && !check(4,7,6,7,'/',pieceColor)) {
+				return true;
+			}
+		}
+		else {
+			return false;
+		}
+		return false;
 	}
 	
 }
