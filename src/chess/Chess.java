@@ -41,6 +41,7 @@ public class Chess {
 				System.out.println("Illegal move, try again:");
 				continue;
 			}
+
 		
 			if( input.equals("resign") ) {
 				gameEnded = true;
@@ -58,7 +59,6 @@ public class Chess {
 				gameEnded = true;
 				continue;
 			}
-
 			valid = true;
 			if( input.contains("draw?")) {
 				drawProposed = true;
@@ -70,13 +70,17 @@ public class Chess {
 				promote = input.charAt(6);
 			}
 		
+			//System.out.println("Chess.start check: ");
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
-			
+			//System.out.println("Check: " + check );
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3];
 			
-			if( b.checkmate( !wTurn ) == true ) {
+			
+			boolean checkmate = b.checkmate(!wTurn);
+			//System.out.println("checkmate: " + checkmate);
+			if( checkmate == true ) {
 				if( check == true ) {
 					System.out.println("Checkmate");
 					if( wTurn ) {
@@ -92,6 +96,7 @@ public class Chess {
 				continue;
 			}
 			
+			
 			//Alternates players
 			if( wTurn ) {
 				wTurn = false;
@@ -106,6 +111,7 @@ public class Chess {
 	public static boolean validInput( Board b, String str, boolean color ) {
 		
 		if( str.length() < 5 ) {
+			System.out.println("invalid coordinate format1");
 			return false;
 		}
 		
@@ -117,6 +123,7 @@ public class Chess {
 		boolean x2 = Character.isLetter(str.charAt(3));
 		boolean y2 = Character.isDigit(str.charAt(4));
 		if( !(x1 && y1 && x2 && y2) ) {
+			System.out.println("Invalid coordinate format2");
 			return false;
 		}
 		if( str.length() > 7 && !str.contains("draw") ) {

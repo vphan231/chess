@@ -11,7 +11,6 @@ public class Pawn extends Piece{
 	boolean validMove(int x1, int y1, int x2, int y2) {
 		//if pawn havn't move yet: can move 2 spaces, 1 space, or 1 space diagonal to kill.		
 		if(!moveYet(y1)) {
-			System.out.println("ran");
 			if( color == false && x1 == x2 && ( y2 == y1+1 || y2 == y1+2 )  ) {
 				return true;
 			}
