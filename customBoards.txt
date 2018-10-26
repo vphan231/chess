@@ -1,0 +1,122 @@
+
+To easily test moves
+
+
+************Enpassant test**************
+bR bN bB bQ bK bB bN bR 8 0
+bp    bp bp bp bp bp bp 7 1
+   ##    ##    ##    ## 6 2
+##    ##    ##    ##    5 3
+   bp    ##    ##    ## 4 4
+##    ##    ##    ##    3 5
+wp wp wp wp wp wp wp wp 2 6
+wR wN wB wQ wK wB wN wR 1 7
+ a  b  c  d  e  f  g  h
+ 0  1  2  3  4  5  6  7
+ 
+		board[0][0] = new Rook(false,"bR"); //color, name
+		board[0][7] = new Rook(false,"bR");
+		board[0][1] = new Knight(false,"bN");
+		board[0][6] = new Knight(false,"bN");
+		board[0][2] = new Bishop(false,"bB");
+		board[0][5] = new Bishop(false,"bB");
+		board[0][3] = new Queen(false,"bQ");
+		board[0][4] = new King(false,"bK");	
+		for(int i = 0; i<8 ; i++) {
+			board[1][i] = new Pawn(false,"bp");
+		}
+		//create white pieces
+		board[7][0] = new Rook(true,"wR"); //color, name
+		board[7][7] = new Rook(true,"wR");
+		board[7][1] = new Knight(true,"wN");
+		board[7][6] = new Knight(true,"wN");
+		board[7][2] = new Bishop(true,"wB");
+		board[7][5] = new Bishop(true,"wB");
+		board[7][3] = new Queen(true,"wQ");
+		board[7][4] = new King(true,"wK");
+		for(int i = 0; i<8 ; i++) {
+			board[6][i] = new Pawn(true,"wp");
+		}
+		
+		board[1][1] = null;
+		board[4][1] = new Pawn(false, "bp");
+		
+
+ ************Castling test**************
+bR bN bB bQ bK bB bN bR 8 0
+bp bp bp bp bp bp bp bp 7 1
+   ##    ##    ##    ## 6 2
+##    ##    ##    ##    5 3
+   ##    ##    ##    ## 4 4
+##    ##    ##    ##    3 5
+wp wp wp wp wp wp wp wp 2 6
+wR    ##    wK wB wN wR 1 7
+ a  b  c  d  e  f  g  h
+ 0  1  2  3  4  5  6  7
+ 
+		board[0][0] = new Rook(false,"bR"); //color, name
+		board[0][7] = new Rook(false,"bR");
+		board[0][1] = new Knight(false,"bN");
+		board[0][6] = new Knight(false,"bN");
+		board[0][2] = new Bishop(false,"bB");
+		board[0][5] = new Bishop(false,"bB");
+		board[0][3] = new Queen(false,"bQ");
+		board[0][4] = new King(false,"bK");	
+		for(int i = 0; i<8 ; i++) {
+			board[1][i] = new Pawn(false,"bp");
+		}
+		//create white pieces
+		board[7][0] = new Rook(true,"wR"); //color, name
+		board[7][7] = new Rook(true,"wR");
+		//board[7][1] = new Knight(true,"wN");
+		board[7][6] = new Knight(true,"wN");
+		//board[7][2] = new Bishop(true,"wB");
+		board[7][5] = new Bishop(true,"wB");
+		//board[7][3] = new Queen(true,"wQ");
+		board[7][4] = new King(true,"wK");
+		for(int i = 0; i<8 ; i++) {
+			board[6][i] = new Pawn(true,"wp");
+		}
+		
+		
+*********Promote**************
+   bN bB bQ bK bB bN bR 8 0
+wp    bp bp bp bp bp bp 7 1
+   ##    ##    ##    ## 6 2
+##    ##    ##    ##    5 3
+   ##    ##    ##    ## 4 4
+##    ##    ##    ##    3 5
+   bp wp wp wp wp wp wp 2 6
+wR    ##    wK wB wN wR 1 7
+ a  b  c  d  e  f  g  h
+ 0  1  2  3  4  5  6  7
+ 
+ 	bP promote should put wK in check, delete wR for checkmate
+ 
+		board[0][0] = new Rook(false,"bR"); //color, name
+		board[0][7] = new Rook(false,"bR");
+		board[0][1] = new Knight(false,"bN");
+		board[0][6] = new Knight(false,"bN");
+		board[0][2] = new Bishop(false,"bB");
+		board[0][5] = new Bishop(false,"bB");
+		board[0][3] = new Queen(false,"bQ");
+		board[0][4] = new King(false,"bK");	
+		for(int i = 0; i<8 ; i++) {
+			board[1][i] = new Pawn(false,"bp");
+		}
+		//create white pieces
+		board[7][0] = new Rook(true,"wR"); //color, name
+		board[7][7] = new Rook(true,"wR");
+		//board[7][1] = new Knight(true,"wN");
+		board[7][6] = new Knight(true,"wN");
+		//board[7][2] = new Bishop(true,"wB");
+		board[7][5] = new Bishop(true,"wB");
+		//board[7][3] = new Queen(true,"wQ");
+		board[7][4] = new King(true,"wK");
+		for(int i = 0; i<8 ; i++) {
+			board[6][i] = new Pawn(true,"wp");
+		}
+		board[1][1] = null;
+		board[6][1] = new Pawn(false, "bp");
+		board[6][0] = null;
+		board[1][0] = new Pawn(white, "wp");
