@@ -71,7 +71,7 @@ public class Chess {
 			}
 		
 			//System.out.println("Chess.start check: ");
-			System.out.println("Other team's king check: ");
+			//System.out.println("Other team's king check: ");
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
 			if( check == true ) {
 				System.out.println("Check");

@@ -14,7 +14,7 @@ public class Board {
 		this.board = new Piece[8][8];
 	}
 	public void initialize() {
-		board[0][0] = new Rook(false,"bR"); //color, name
+		//board[0][0] = new Rook(false,"bR"); //color, name
 		board[0][7] = new Rook(false,"bR");
 		board[0][1] = new Knight(false,"bN");
 		board[0][6] = new Knight(false,"bN");
@@ -26,7 +26,7 @@ public class Board {
 			board[1][i] = new Pawn(false,"bp");
 		}
 		//create white pieces
-		board[7][0] = new Rook(true,"wR"); //color, name
+		//board[7][0] = new Rook(true,"wR"); //color, name
 		board[7][7] = new Rook(true,"wR");
 		//board[7][1] = new Knight(true,"wN");
 		board[7][6] = new Knight(true,"wN");
@@ -270,7 +270,7 @@ public class Board {
 			return false;
 		}
 		*/
-		System.out.println("valid: " + output);
+		//System.out.println("valid: " + output);
 		return output;
 	}
 
@@ -363,11 +363,11 @@ public class Board {
 				copy[i][k] = this.board[i][k];
 			}
 		}
-		System.out.println("start:");
-		print();
+		//System.out.println("start:");
+		//print();
 		move( x1, y1, x2, y2, promote);
-		System.out.println("moved:");
-		print();
+		//System.out.println("moved:");
+		//print();
 		
 		//get king's coordinates
 		int kingX= 0, kingY= 0;	
@@ -380,8 +380,8 @@ public class Board {
 				}
 			}
 		}
-		System.out.println("King[" + kingY + "][" + kingX + "]");
-		System.out.println("King color: " + pieceColor);
+		//System.out.println("King[" + kingY + "][" + kingX + "]");
+		//System.out.println("King color: " + pieceColor);
 		//check if any enemy pieces has valid moves to king
 		boolean check = false;
 		for( int y = 0; y < 8; y++ ) {
@@ -400,7 +400,7 @@ public class Board {
 	}
 	
 	public boolean checkmate( boolean color ) {
-		//System.out.println("Board.Checkmate");
+		System.out.println("Board.Checkmate");
 		//have to check if any piece on board can get the king out of check by killing/blocking/the king moving itself 
 		//only checkmate if there is no moves for any piece that gets the king out of check
 		boolean nonCheck = true; //assume there is no noncheck moves until noncheck move is found
@@ -463,6 +463,25 @@ public class Board {
 		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
 		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
 		 */
+		
+		if( x1 + 2 == x2 ) {
+			if( pieceColor && board[7][7] == null ) {
+				return false;
+			}
+			if( !pieceColor && board[0][7] == null ) {
+				return false;
+			}
+		}
+		if( x1 - 2 == x2 ) {
+			if( pieceColor && board[7][0] == null ) {
+				return false;
+			}
+			if( !pieceColor && board[0][0] == null ) {
+				return false;
+			}
+		}
+		
+		
 		boolean castleRight = false;
 		if(x2 - x1 > 0) {
 			castleRight = true;
