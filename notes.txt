@@ -1,3 +1,6 @@
+REMEMBER JAVADOCS!!!!!!!!!
+NAMES!!!
+
 10/24 enpassant - V
 	I made the following fields in baord to record the last move.
 	public int prevX1;
