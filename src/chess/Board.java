@@ -15,32 +15,12 @@ public class Board {
 	}
 	public void initialize() {
 		//board[0][0] = new Rook(false,"bR"); //color, name
-		board[0][7] = new Rook(false,"bR");
-		board[0][1] = new Knight(false,"bN");
-		board[0][6] = new Knight(false,"bN");
-		//board[0][2] = new Bishop(false,"bB");
-		board[0][5] = new Bishop(false,"bB");
-		//board[0][3] = new Queen(false,"bQ");
-		board[0][4] = new King(false,"bK");	
-		for(int i = 0; i<8 ; i++) {
-			board[1][i] = new Pawn(false,"bp");
-		}
-		//create white pieces
-		//board[7][0] = new Rook(true,"wR"); //color, name
-		board[7][7] = new Rook(true,"wR");
-		//board[7][1] = new Knight(true,"wN");
-		board[7][6] = new Knight(true,"wN");
-		//board[7][2] = new Bishop(true,"wB");
-		board[7][5] = new Bishop(true,"wB");
-		//board[7][3] = new Queen(true,"wQ");
-		board[7][4] = new King(true,"wK");
-		for(int i = 0; i<8 ; i++) {
-			board[6][i] = new Pawn(true,"wp");
-		}
-		board[1][1] = null;
-		board[6][1] = new Pawn(false, "bp");
-		board[6][0] = null;
-		board[1][0] = new Pawn(true, "wp");
+		board[7][0] = new King( false, "bK");
+		board[6][0] = new Pawn( false, "bp");
+		board[4][6] = new King( true, "wK");
+		board[5][6] = new Queen( true, "wQ");
+		
+		
 		/*
 		//black == false; white == true
 		//create black pieces
@@ -191,14 +171,16 @@ public class Board {
 		char type = p.type;
 		boolean output = true;
 		
-		if( p.type == 'K' && Math.abs(x2-x1) == 2 && y2-y1==0){ 
+		//int math = Math.abs(x2-x1);
+		//System.out.println(math);
+		if( p.type == 'K' && Math.abs(x2-x1) == 2 && y2 == y1){ 
 			 if( !validCastling(x1,y1,x2,y2,color) ) {
-				 System.out.println("invalid castling");
+				// System.out.println("invalid castling");
 				 return false;
 			 }
 		 }else if(  p.type == 'P' && x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
 		 	if( !validEnpassant(x1,y1,x2,y2,type) ) {
-		 		System.out.println("invalid Enpassant");
+		 		//System.out.println("invalid Enpassant");
 		 		return false;
 		 	}		 
 		 }else { //regular moves
@@ -226,16 +208,19 @@ public class Board {
 			if( type == 'B') { 
 				output = d;
 			}
+			System.out.println( p.type );
 			if( type == 'K' ) {
 				switch(direction) {
 					case 1: output = h; break;
 					case 2: output = v; break;
+					case 3: output = d; break;
 				}
 			}
 			if( type == 'P' ) {
 				//System.out.println("direction: " + direction );
 				if( direction == 3) {
 					if( board[y2][x2] != null ) {
+						System.out.println(board[y2][x2].name);
 						output = d;
 					}else{
 						output = false;
@@ -264,12 +249,12 @@ public class Board {
 			//System.out.println("path blocked");
 			return output;
 		}
-		/*
+		
 		if( check( x1, y1, x2, y2, promote, color) ) { //moves puts own king in check
 			//System.out.println("puts king in check");
 			return false;
 		}
-		*/
+		
 		//System.out.println("valid: " + output);
 		return output;
 	}
@@ -414,6 +399,8 @@ public class Board {
 					for( int y2 = 0; y2 < 8; y2++ ) {
 						for( int x2 = 0; x2 < 8; x2++ ) {
 							if( valid( x, y, x2, y2, '/', color ) ) {
+								System.out.println( "[" +y+"]["+x+"] ["+y2 +"][" +x2 + "]" );
+								valid( x, y, x2, y2, '/', color );
 								return false;
 							}
 						}
