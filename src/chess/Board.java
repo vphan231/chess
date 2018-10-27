@@ -30,11 +30,11 @@ public class Board {
 		//create white pieces
 		board[7][0] = new Rook(true,"wR"); //color, name
 		board[7][7] = new Rook(true,"wR");
-		board[7][1] = new Knight(true,"wN");
+		//board[7][1] = new Knight(true,"wN");
 		board[7][6] = new Knight(true,"wN");
-		board[7][2] = new Bishop(true,"wB");
+		//board[7][2] = new Bishop(true,"wB");
 		board[7][5] = new Bishop(true,"wB");
-		board[7][3] = new Queen(true,"wQ");
+		//board[7][3] = new Queen(true,"wQ");
 		board[7][4] = new King(true,"wK");
 		for(int i = 0; i<8 ; i++) {
 			board[6][i] = new Pawn(true,"wp");
@@ -241,7 +241,7 @@ public class Board {
 			return false;
 		}
 		*/
-		//System.out.println("valid: " + output);
+		System.out.println("valid: " + output);
 		return output;
 	}
 
@@ -251,18 +251,16 @@ public class Board {
 			board[y2][x2] = p;
 			board[y1][x1] = null;
 			Piece p2 = null;
-			if(board[y2][x2-2].type == 'R') {
+			if(board[y2][x2-2] != null && board[y2][x2-2].type == 'R') {
 				p2 = board[y2][x2-2];
 				board[y2][x2+1] = p2;
 				board[y2][x2-2] = null;
 			}
-			else if(board[y2][x2+1].type == 'R') {
+			else if(board[y2][x2+1] != null && board[y2][x2+1].type == 'R') {
 				p2 = board[y2][x2+1];
 				board[y2][x2-1] = p2;
 				board[y2][x2+1] = null;
 			}
-			p.moveYet = true;
-			p2.moveYet = true;
 		 	return;
 		}
 		
@@ -280,9 +278,6 @@ public class Board {
 		
 		board[y1][x1] = null;
 		board[y2][x2] = p;
-		if( p.type == 'K' || p.type == 'R') {
-			p.moveYet = true;
-		}
 		
 		//pawn needs to be promoted
 		if( ( y2 == 0 || y2 == 7 ) && p.type == 'P' ) {
@@ -375,10 +370,7 @@ public class Board {
 		for( int y = 0; y < 8; y++ ) { 
 			for( int x = 0; x < 8; x++ ) {
 				//finds every piece of color on board
-				//System.out.println("[" + y + "][" + x+ "]");
-				if( board[y][x] != null ) {
-					//System.out.println(board[y][x].name);
-				}
+				//System.out.println("[" + y + "][" + x+ "]");m;
 				if( board[y][x] != null && board[y][x].color == color ) {
 					//checks every space on board and see if its a valid move for that piece
 					//System.out.println("found: " + board[y][x].name);
@@ -430,7 +422,6 @@ public class Board {
 	}
 	
 	public boolean validCastling(int x1, int y1, int x2, int y2, boolean pieceColor) {
-		//System.out.println("validCastling:");
 		/*king and rook cannot move yet
 		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
 		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
@@ -439,7 +430,8 @@ public class Board {
 		if(x2 - x1 > 0) {
 			castleRight = true;
 		}
-		System.out.println("castleRight = "+castleRight + " "+pathH(4,7,1,7));
+		//System.out.println("castleRight = "+castleRight + " "+pathH(4,0,1,0)+ " "+ pieceColor);
+		//System.out.println("board[0][4] = "+board[0][4].type + " "+board[0][4].moveYet+ " "+ board[0][0].type + " "+board[0][0].moveYet);
 		//castling to black's left
 		if(pieceColor == false && castleRight == false && board[0][0].type == 'R' && board[0][0].moveYet == false 
 		&& board[0][4].type == 'K' && board[0][4].moveYet == false && pathH(4,0,1,0) == true) {
@@ -447,7 +439,7 @@ public class Board {
 			//2) 1 spot left or right depending on which way he/she wants to castle-> !check
 			//3) 2 spot left or right depending on direction of castle(where king will be)-> !check
 			//if all 3 scenarios are true -> return true;
-			if(!check(4,0,4,0,'/',pieceColor) && !check(4,0,3,0,'/',pieceColor) && !check(4,0,2,0,'/',pieceColor)) {
+			if(!check(4,0,4,0,'/',pieceColor) && !check(4,0,3,0,'/',pieceColor) && !check(4,0,2,0,'/',pieceColor)) {;
 				return true;
 			}
 		}

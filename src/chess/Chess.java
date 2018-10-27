@@ -77,7 +77,7 @@ public class Chess {
 			//System.out.println("Check: " + check );
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3]; b.prevType = b.getType(moveCom[2], moveCom[3]); 
-			
+			b.board[moveCom[3]][moveCom[2]].moveYet = true;
 			
 			boolean checkmate = b.checkmate(!wTurn);
 			//System.out.println("checkmate: " + checkmate);
