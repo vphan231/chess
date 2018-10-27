@@ -75,7 +75,7 @@ public class Chess {
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
 			//System.out.println("Check: " + check );
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
-			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3];
+			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3]; b.prevType = b.getType(moveCom[2], moveCom[3]); 
 			
 			
 			boolean checkmate = b.checkmate(!wTurn);

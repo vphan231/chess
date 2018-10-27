@@ -167,7 +167,7 @@ public class Board {
 				 System.out.println("invalid castling");
 				 return false;
 			 }
-		 }else if(  p.type == 'P' && y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
+		 }else if(  p.type == 'P' && x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
 		 	if( !validEnpassant(x1,y1,x2,y2,type) ) {
 		 		System.out.println("invalid Enpassant");
 		 		return false;
@@ -266,7 +266,7 @@ public class Board {
 		 	return;
 		}
 		
-		if( p.type == 'P' && y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){
+		if( p.type == 'P' && x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){
 			board[y2][x2] = p;
 			board[y1][x1] = null;
 			if(p.color == false) {
@@ -397,8 +397,8 @@ public class Board {
 	
 	public boolean validEnpassant(int x1, int y1, int x2, int y2, char type) {
 		//System.out.println("Valid Enpassant:");
-		//1)check if both are pawns. 2)check if the prev move was a double move vertical. 
-		if(prevType != 'P' || type != 'P' || Math.abs(prevY2-prevY1) == 2) {
+		//1)check if both are not pawns. 2)check if the prev move was not a double move vertical. 
+		if(prevType != 'P' || type != 'P' || Math.abs(prevY2-prevY1) != 2) {
 			return false;
 		}
 		//move() not called, so piece did not move yet. Compare initial move (x1,y1) with final move (prevX2,prevY2)
@@ -406,7 +406,7 @@ public class Board {
 			if(board[prevY2][prevX2-1] == board[y1][x1]) {
 				//yes both pawns are right next to each other.
 				//check if the movement (x2,y2) is the correct movement
-				if(y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
+				if(x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) { //pawn has moved into the same column as prev pawn and the spot is empty
 					return true;
 				}
 				
@@ -414,14 +414,14 @@ public class Board {
 		}
 		else if(prevX2-1 < 0) {//out of bounds. just check right side
 			if(board[prevY2][prevX2+1] == board[y1][x1]) {
-				if(y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) {
+				if(x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) {
 					return true;
 				}
 			}
 		}
 		else {//check both left and right
-			if(board[prevY2][prevX2+1] == board[y1][x1] || board[prevY1][prevX1-1] == board[y1][x1]) {
-				if(y2 == prevY2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) {
+			if(board[prevY2][prevX2+1] == board[y1][x1] || board[prevY2][prevX2-1] == board[y1][x1]) {
+				if(x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null) {
 					return true;
 				}
 			}
@@ -475,6 +475,10 @@ public class Board {
 			return false;
 		}
 		return false;
+	}
+	
+	public char getType(int x2, int y2) {
+		return board[y2][x2].type;
 	}
 	
 }
