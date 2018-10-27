@@ -71,6 +71,7 @@ public class Chess {
 			}
 		
 			//System.out.println("Chess.start check: ");
+			//System.out.println("1st: "+ moveCom[0]+ " 2nd: " + moveCom[1]+ " 3rd; " + moveCom[2]+ " 4th: " + moveCom[3]);
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
 			//System.out.println("Check: " + check );
