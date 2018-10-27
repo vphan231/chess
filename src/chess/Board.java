@@ -14,6 +14,34 @@ public class Board {
 		this.board = new Piece[8][8];
 	}
 	public void initialize() {
+		board[0][0] = new Rook(false,"bR"); //color, name
+		board[0][7] = new Rook(false,"bR");
+		board[0][1] = new Knight(false,"bN");
+		board[0][6] = new Knight(false,"bN");
+		//board[0][2] = new Bishop(false,"bB");
+		board[0][5] = new Bishop(false,"bB");
+		//board[0][3] = new Queen(false,"bQ");
+		board[0][4] = new King(false,"bK");	
+		for(int i = 0; i<8 ; i++) {
+			board[1][i] = new Pawn(false,"bp");
+		}
+		//create white pieces
+		board[7][0] = new Rook(true,"wR"); //color, name
+		board[7][7] = new Rook(true,"wR");
+		//board[7][1] = new Knight(true,"wN");
+		board[7][6] = new Knight(true,"wN");
+		//board[7][2] = new Bishop(true,"wB");
+		board[7][5] = new Bishop(true,"wB");
+		//board[7][3] = new Queen(true,"wQ");
+		board[7][4] = new King(true,"wK");
+		for(int i = 0; i<8 ; i++) {
+			board[6][i] = new Pawn(true,"wp");
+		}
+		board[1][1] = null;
+		board[6][1] = new Pawn(false, "bp");
+		board[6][0] = null;
+		board[1][0] = new Pawn(true, "wp");
+		/*
 		//black == false; white == true
 		//create black pieces
 		board[0][0] = new Rook(false,"bR"); //color, name
@@ -39,6 +67,7 @@ public class Board {
 		for(int i = 0; i<8 ; i++) {
 			board[6][i] = new Pawn(true,"wp");
 		}
+		*/
 		return;
 	}
 	public void print() {
@@ -199,8 +228,8 @@ public class Board {
 			}
 			if( type == 'K' ) {
 				switch(direction) {
-					case 1: output = h;
-					case 2: output = v;
+					case 1: output = h; break;
+					case 2: output = v; break;
 				}
 			}
 			if( type == 'P' ) {
@@ -219,15 +248,15 @@ public class Board {
 			}
 			if( type == 'Q' ) {
 				switch(direction) {
-					case 1: output = h;
-					case 2: output = v;
-					case 3: output = d;
+					case 1: output = h; break;
+					case 2: output = v; break;
+					case 3: output = d; break;
 				}
 			}
 			if( type == 'R' ) {
 				switch( direction ) {
-				case 1: output = h;
-				case 2: output = v;
+				case 1: output = h; break;
+				case 2: output = v; break;
 				}
 			}
 		}
@@ -294,11 +323,17 @@ public class Board {
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
 		//checks if c is a valid piece to promote to
-		if (c != 'Q' || c != 'R' || c != 'N' || c != 'B' ) {
+		//System.out.println("c: " + c);
+		if (c != 'Q' && c != 'R' && c != 'N' && c != 'B' ) {
+			System.out.println("not QRNB");
 			return false;
 		}
 		// 1st: if piece is a pawn. 2nd: if validate a pawn's move. 3rd: Final move is at the end of the board
-		if (board[x1][y1].type == 'P' && board[x1][y1].validMove(x1, y1, x2, y2) && (x2 == 0 || x2 == 7) ) {
+		/*
+		System.out.println("type: " + board[y1][x1].type );
+		System.out.println("type: " + board[])
+		*/
+		if (board[y1][x1].type == 'P' && board[y1][x1].validMove(x1, y1, x2, y2) && (y2 == 0 || y2 == 7) ) {
 			return true;
 		}
 		return false;
@@ -333,11 +368,11 @@ public class Board {
 				copy[i][k] = this.board[i][k];
 			}
 		}
-		//System.out.println("start:");
-		//print();
+		System.out.println("start:");
+		print();
 		move( x1, y1, x2, y2, promote);
-		//System.out.println("moved:");
-		//print();
+		System.out.println("moved:");
+		print();
 		
 		//get king's coordinates
 		int kingX= 0, kingY= 0;	
@@ -350,6 +385,8 @@ public class Board {
 				}
 			}
 		}
+		System.out.println("King[" + kingY + "][" + kingX + "]");
+		System.out.println("King color: " + pieceColor);
 		//check if any enemy pieces has valid moves to king
 		boolean check = false;
 		for( int y = 0; y < 8; y++ ) {

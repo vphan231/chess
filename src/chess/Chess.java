@@ -71,12 +71,15 @@ public class Chess {
 			}
 		
 			//System.out.println("Chess.start check: ");
+			System.out.println("Other team's king check: ");
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
+			if( check == true ) {
+				System.out.println("Check");
+			}
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
 			//System.out.println("Check: " + check );
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 			b.prevX1 = moveCom[0]; b.prevY1 = moveCom[1]; b.prevX2 = moveCom[2]; b.prevY2 = moveCom[3]; b.prevType = b.getType(moveCom[2], moveCom[3]); 
-			
 			
 			boolean checkmate = b.checkmate(!wTurn);
 			//System.out.println("checkmate: " + checkmate);
@@ -135,6 +138,9 @@ public class Chess {
 		char promote = '/';
 		if( str.length() == 7 ) { //g7 g8 Q
 			promote = str.charAt(6);
+			if( !b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote) ){
+				System.out.println("invalid promote input");
+			}
 			return b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 		}
 		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, color );
