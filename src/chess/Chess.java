@@ -1,5 +1,3 @@
-
-//MAIN CLASS
 package chess;
 
 import java.util.Scanner;
