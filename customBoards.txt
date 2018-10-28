@@ -1,3 +1,8 @@
+		board[7][0] = new King( false, "bK");
+		board[6][0] = new Pawn( false, "bp");
+		board[4][6] = new King( true, "wK");
+		board[5][6] = new Queen( true, "wQ");
+		
 
 To easily test moves
 		board[7][7] = new King( true, "wK");
