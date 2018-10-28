@@ -40,7 +40,12 @@ public class Board {
 		for(int i = 0; i<8 ; i++) {
 			board[6][i] = new Pawn(true,"wp");
 		}
-		
+		board[0][1] = null;
+		board[1][1] = null;
+		board[1][1] = new Pawn(true,"wp");
+		board[0][2] = null;
+		board[0][3] = null;
+		board[0][0] = null;
 		return;
 	}
 	public void print() {
