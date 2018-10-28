@@ -1,9 +1,18 @@
 package chess;
 
-
+/**
+ * @author Cindy Lin
+ * @author Vincent Phan
+ */
 public class Board {
-
+	/**
+	 * Game board
+	 */
 	public Piece[][] board;
+	
+	/**
+	 * Coordinates of the previous player's move and the piece moved
+	 */
 	public int prevX1;
 	public int prevY1;
 	public int prevX2;
@@ -13,6 +22,10 @@ public class Board {
 	public Board() {
 		this.board = new Piece[8][8];
 	}
+	
+	/**
+	 * @return sets pieces on the starting board
+	 */
 	public void initialize() {
 		//board[0][0] = new Rook(false,"bR"); //color, name
 		//black == false; white == true
@@ -43,6 +56,10 @@ public class Board {
 		
 		return;
 	}
+	
+	/**
+	 * @return prints the board to console
+	 */
 	public void print() {
 		int colDis = 8;
 		for( int i = 0; i < 8; i++ ) {
@@ -75,7 +92,10 @@ public class Board {
 		//System.out.println(" 0  1  2  3  4  5  6  7 ");
 	}
 	
-	//returns true if path is open, false if path is blocked
+	/**
+	 * @param move coordinates
+	 * @return boolean horizontal path is open 
+	 */
 	public boolean pathH( int x1, int y1, int x2, int y2 ) {
 		// Same row, move along column - same y, different x
 		int begin = x1+1; int end = x2-1; // y1 <= y2
@@ -92,6 +112,11 @@ public class Board {
 		}
 		return true;
 	}
+	
+	/**
+	 * @param move coordinates
+	 * @return boolean vertical path is open 
+	 */
 	public boolean pathV( int x1, int y1, int x2, int y2 ) {
 		// Same column, move along row - same x, different y
 		int begin = y1+1; int end = y2-1; // y1 <= y2
@@ -108,6 +133,11 @@ public class Board {
 		}
 		return true;
 	}
+	
+	/**
+	 * @param move coordinates
+	 * @return boolean diagonal path is open 
+	 */
 	public boolean pathD( int x1, int y1, int x2, int y2 ) {
 		int lowerR = y1; int lowerC = x1; 
 		int higherR = y2; int higherC = x2; 
@@ -140,6 +170,10 @@ public class Board {
 		return true;
 	}
 	
+	/**
+	 * @param move coordinates
+	 * @return boolean the move is valid
+	 */
 	public boolean valid( int x1, int y1, int x2, int y2, char promote, boolean color ) {
 
 		Piece p = board[y1][x1];
@@ -231,6 +265,10 @@ public class Board {
 		return output;
 	}
 
+	/**
+	 * @param move coordinates
+	 * @return makes the move
+	 */
 	public void move( int x1, int y1, int x2, int y2, char c ) {
 		Piece p = board[y1][x1];
 		if( p.type == 'K' && Math.abs(x2-x1) == 2 && y2-y1 == 0){
@@ -272,6 +310,10 @@ public class Board {
 		return;
 	}
 
+	/**
+	 * @param move coordinates and piece to promote to
+	 * @return boolean is the promote valid
+	 */
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
 		//checks if c is a valid piece to promote to
@@ -285,6 +327,10 @@ public class Board {
 		return false;
 	}
 	
+	/**
+	 * @param coordinates of piece to promote and piece to promote to
+	 * @return promotes piece
+	 */
 	public void promote( int x, int y, char c ) {
 		//promote piece at x y to piece c
 		boolean pieceColor = board[y][x].color;
@@ -305,6 +351,12 @@ public class Board {
 		return;
 	}
 	
+	/**
+	 * @param coordinates of move
+	 * @param promote piece to promote to
+	 * @param pieceColor color of king
+	 * @return boolean does the move put the king of pieceColor in check?
+	 */
 	public boolean check( int x1, int y1, int x2, int y2, char promote, boolean pieceColor ) {
 		//check if move puts king of specified color in check
 		Piece[][] copy = new Piece[8][8];
@@ -364,6 +416,10 @@ public class Board {
 		return nonCheck; 
 	}
 	
+	/**
+	 * @param coordinates, piece type
+	 * @return true if the move a valid Enpassant move, false otherwise
+	 */
 	public boolean validEnpassant(int x1, int y1, int x2, int y2, char type) {
 		//1)check if both are not pawns. 2)check if the prev move was not a double move vertical. 
 		if(prevType != 'P' || type != 'P' || Math.abs(prevY2-prevY1) != 2) {
@@ -397,6 +453,11 @@ public class Board {
 		return false;
 	}
 	
+	
+	/**
+	 * @param move coordinates
+	 * @return true if move is valid castling move, false otherwise
+	 */
 	public boolean validCastling(int x1, int y1, int x2, int y2, boolean pieceColor) {
 		/*king and rook cannot move yet
 		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
@@ -464,6 +525,10 @@ public class Board {
 		return false;
 	}
 	
+	/**
+	 * @param coordinates
+	 * @return type of the piece at coordinate
+	 */
 	public char getType(int x2, int y2) {
 		return board[y2][x2].type;
 	}
