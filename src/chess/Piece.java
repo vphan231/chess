@@ -18,19 +18,24 @@ public abstract class Piece {
 	boolean color;
 	
 	/**
-	 * 
+	 * name 
 	 */
 	String name;
 	
 	/**
-	 * true - piece has been moved
-	 * false - piece has never been moved
+	 * true if piece has been moved, false otherwise
 	 */
 	boolean moveYet;
 	
+
+	
 	/**
-	 * @param coordinates
-	 * @return true if move is allowed for the piece, false if not allowed for the piece
+	 * 
+	 * @param x1 coordinate
+	 * @param y1 coordinate
+	 * @param x2 coordinate
+	 * @param y2 coordinate
+	 * @return true if move is valid
 	 */
 	abstract boolean validMove(int x1,int y1,int x2,int y2);
 	

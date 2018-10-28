@@ -1,7 +1,19 @@
 package chess;
 
+/**
+ * 
+ * @author Cindy Lin
+ * @author Vincent Phan
+ *
+ */
+
 public class Pawn extends Piece{
 	
+	/**
+	 * 
+	 * @param color piece color
+	 * @param name piece name
+	 */
 	public Pawn(boolean color, String name) {
 		type = 'P';
 		this.color = color;
@@ -40,6 +52,11 @@ public class Pawn extends Piece{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param row
+	 * @return true if row is pawn's starting point
+	 */
 	public boolean moveYet(int y1) {
 		if(name.equalsIgnoreCase("wp") && y1 == 6) {
 			return false;

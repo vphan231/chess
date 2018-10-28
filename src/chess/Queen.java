@@ -1,7 +1,12 @@
 package chess;
 
 public class Queen extends Piece{
-
+	
+	/**
+	 * 
+	 * @param color piece color
+	 * @param name piece name
+	 */
 	public Queen(boolean color, String name) {
 		this.type = 'Q';
 		this.color = color;
