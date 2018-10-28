@@ -3,16 +3,24 @@
 package chess;
 
 import java.util.Scanner;
-
+/**
+ * @author Cindy Lin
+ * @author Vincent Phan
+ */
 public class Chess {
-	
+	/**
+	 * Main chess program. Creates, Initiates and Starts a chess board
+	 */
 	public static void main(String[] args) {
 		Board b = new Board();
 		b.initialize();
 		start(b);
 	}
 	
-	
+	/**
+	 * Runs the chess program of a given board
+	 * @param board
+	 */
 	public static void start( Board b ) {
 		Scanner sc = new Scanner( System.in );
 		boolean wTurn = true; //true-white, false-black
@@ -123,7 +131,11 @@ public class Chess {
 		sc.close();
 	}
 	
-
+	/**
+	 * Checks if the input string is the correct format
+	 * @param board, String input, Color(black = false, white = true), drawProp: true or false if a draw is proposed
+	 * @return true or false
+	 */
 	public static boolean validInput( Board b, String str, boolean color, boolean drawProp ) {
 	
 		if( str.equals("draw") || str.equals("resign") ) {
@@ -160,7 +172,11 @@ public class Chess {
 		}
 		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, color );
 	}
-	
+	/**
+	 * Converts values to the 2D array indexes
+	 * @param moveStr
+	 * @return int array of converted values
+	 */
 	public static int[] convertArr( String moveStr ) {
 		//moveStr = g7 g8 draw
 		int[] coords = new int[4];
@@ -170,7 +186,11 @@ public class Chess {
 		coords[3] = convert( moveStr.charAt(4) );
 		return coords;
 	}
-	
+	/**
+	 * Convert input into board indexes
+	 * @param c
+	 * @return int conversion of board inputs
+	 */
 	public static int convert( char c ) {
 		switch(c) {
 			case '8': return 0; case 'a': return 0;
