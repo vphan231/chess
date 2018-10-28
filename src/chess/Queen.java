@@ -1,5 +1,8 @@
 package chess;
-
+/**
+ * @author Cindy Lin
+ * @author Vincent Phan
+ */
 public class Queen extends Piece{
 	
 	/**
