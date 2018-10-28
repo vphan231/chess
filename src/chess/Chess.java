@@ -25,21 +25,24 @@ public class Chess {
 		
 		while( gameEnded == false ){
 			if( valid == true) { //dont reprint if bad input == true
-				System.out.println();
 				b.print();
+				
 				System.out.println();
-			}
-			if( wTurn ) {
-				System.out.print("White's turn: ");
-			}else {					
-				System.out.print("Black's turn: ");
+				
+				if( wTurn ) {
+					System.out.print("White's turn: ");
+				}else {					
+					System.out.print("Black's turn: ");
+				}
+
 			}
 			input = sc.nextLine();
+			System.out.println();
 			input = input.toLowerCase();
 			
-			valid = validInput( b, input, wTurn);
+			valid = validInput( b, input, wTurn, drawProposed);
 			if( valid == false ) {
-				System.out.println("Illegal move, try again:");
+				System.out.print("Illegal move, try again: ");
 				continue;
 			}
 
@@ -65,6 +68,7 @@ public class Chess {
 			if( input.contains("draw?")) {
 				drawProposed = true;
 			}
+			
 			moveCom = convertArr(input); // moveCom[4] = x1, x1, x2, x2	
 			
 			char promote = '/';
@@ -75,8 +79,10 @@ public class Chess {
 			//System.out.println("Chess.start check: ");
 			//System.out.println("Other team's king check: ");
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
+			
 			if( check == true ) {
 				System.out.println("Check");
+				System.out.println();
 			}
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
 			//System.out.println("Check: " + check );
@@ -86,9 +92,12 @@ public class Chess {
 			
 			boolean checkmate = b.checkmate(!wTurn);
 			//System.out.println("checkmate: " + checkmate);
+			//check = true;
+			//checkmate = true;
 			if( checkmate == true ) {
 				if( check == true ) {
 					System.out.println("Checkmate");
+					System.out.println();
 					if( wTurn ) {
 						System.out.println("White wins");
 					}else {
@@ -96,6 +105,7 @@ public class Chess {
 					}
 				}if( check == false ) {
 					System.out.println("Stalemate");
+					System.out.println();
 					System.out.println("draw");
 				}
 				gameEnded = true;	
@@ -114,9 +124,12 @@ public class Chess {
 	}
 	
 
-	public static boolean validInput( Board b, String str, boolean color ) {
+	public static boolean validInput( Board b, String str, boolean color, boolean drawProp ) {
 	
 		if( str.equals("draw") || str.equals("resign") ) {
+			if( str.equals("draw") && !drawProp ) {
+				return false;
+			}
 			return true;
 		}
 		if( str.length() < 5 ) {
