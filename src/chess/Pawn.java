@@ -30,10 +30,10 @@ public class Pawn extends Piece{
 		
 		//pawn already moved- single forward or single forward either right or left diagona
 		else {
-			if( !color && (x1 == x2 && y2 == y1+1) || ((x1 == x2-1 || x1== x2+1) && y2 == y1+1) ) {
+			if( !color && ((x1 == x2 && y2 == y1+1) || ((x1 == x2-1 || x1== x2+1) && y2 == y1+1)) ) {
 				return true;
 			}
-			if( color && (x1 == x2 && y2 == y1-1) || ((x1 == x2-1 || x1== x2+1) && y2 == y1-1) ) {
+			if( color && ((x1 == x2 && y2 == y1-1) || ((x1 == x2-1 || x1== x2+1) && y2 == y1-1)) ) {
 				return true;
 			}
 			return false;

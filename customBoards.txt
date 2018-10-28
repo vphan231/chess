@@ -1,6 +1,46 @@
+		board[7][0] = new King( false, "bK");
+		board[6][0] = new Pawn( false, "bp");
+		board[4][6] = new King( true, "wK");
+		board[5][6] = new Queen( true, "wQ");
+		
 
 To easily test moves
+		board[7][7] = new King( true, "wK");
+		board[1][3] = new Pawn( false, "bp" );
+		board[1][4] = new Pawn( false, "bp" );
+		board[1][5] = new Pawn( false, "bp" );
+		board[2][3] = new Pawn( false, "bp" );
+		board[2][5] = new King( false, "bK" );
+		board[1][7] = new Queen( true, "wQ" );
+		board[3][3] = new Pawn( false, "bp" );
+		board[3][4] = new Pawn( false, "bp" );
+		board[3][5] = new Pawn( false, "bp" );
 
+
+****************************
+		board[7][7] = new King( true, "wK");
+		board[1][3] = new Pawn( false, "bp" );
+		board[1][4] = new Pawn( false, "bp" );
+		board[1][5] = new Pawn( false, "bp" );
+		board[2][3] = new Pawn( false, "bp" );
+		board[2][5] = new King( false, "bK" );
+		board[1][6] = new Queen( true, "wQ" );
+		board[3][3] = new Pawn( false, "bp" );
+		board[3][4] = new Pawn( false, "bp" );
+		board[3][5] = new Knight( false, "bN" );
+
+
+******************************
+		board[7][7] = new King( false, "bK");
+		board[1][3] = new Pawn( true, "wp" );
+		board[1][4] = new Pawn( true, "wp" );
+		board[1][5] = new Pawn( true, "wp" );
+		board[2][3] = new Pawn( true, "wp" );
+		board[2][5] = new King( true, "wK" );
+		board[1][6] = new Queen( false, "bQ" );
+		board[3][3] = new Pawn( true, "wp" );
+		board[3][4] = new Pawn( true, "wp" );
+		board[3][5] = new Knight( true, "wN" );
 
 ************Enpassant test**************
 bR bN bB bQ bK bB bN bR 8 0
