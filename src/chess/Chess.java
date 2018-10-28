@@ -24,8 +24,8 @@ public class Chess {
 		boolean check; 
 		
 		while( gameEnded == false ){
-			System.out.println();
 			if( valid == true) { //dont reprint if bad input == true
+				System.out.println();
 				b.print();
 				System.out.println();
 			}
@@ -35,6 +35,7 @@ public class Chess {
 				System.out.print("Black's turn: ");
 			}
 			input = sc.nextLine();
+			input = input.toLowerCase();
 			
 			valid = validInput( b, input, wTurn);
 			if( valid == false ) {
@@ -55,6 +56,7 @@ public class Chess {
 			}
 			
 			if(drawProposed == true && input.equals("draw") ) {
+				System.out.println("draw");
 				valid = true;
 				gameEnded = true;
 				continue;
@@ -71,7 +73,7 @@ public class Chess {
 			}
 		
 			//System.out.println("Chess.start check: ");
-			System.out.println("Other team's king check: ");
+			//System.out.println("Other team's king check: ");
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
 			if( check == true ) {
 				System.out.println("Check");
@@ -113,21 +115,20 @@ public class Chess {
 	
 
 	public static boolean validInput( Board b, String str, boolean color ) {
-		
-		if( str.length() < 5 ) {
-			System.out.println("invalid coordinate format1");
-			return false;
-		}
-		
+	
 		if( str.equals("draw") || str.equals("resign") ) {
 			return true;
+		}
+		if( str.length() < 5 ) {
+			//System.out.println("invalid coordinate format1");
+			return false;
 		}
 		boolean x1 = Character.isLetter(str.charAt(0));
 		boolean y1 = Character.isDigit(str.charAt(1));
 		boolean x2 = Character.isLetter(str.charAt(3));
 		boolean y2 = Character.isDigit(str.charAt(4));
 		if( !(x1 && y1 && x2 && y2) ) {
-			System.out.println("Invalid coordinate format2");
+			//System.out.println("Invalid coordinate format2");
 			return false;
 		}
 		if( str.length() > 7 && !str.contains("draw") ) {
@@ -140,7 +141,7 @@ public class Chess {
 		if( str.length() == 7 ) { //g7 g8 Q
 			promote = str.charAt(6);
 			if( !b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote) ){
-				System.out.println("invalid promote input");
+				//System.out.println("invalid promote input");
 			}
 			return b.validPromote( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
 		}
