@@ -24,7 +24,7 @@ public class Board {
 	}
 	
 	/**
-	 * @return sets pieces on the starting board
+	 * sets the starting board up
 	 */
 	public void initialize() {
 		//board[0][0] = new Rook(false,"bR"); //color, name
@@ -63,7 +63,7 @@ public class Board {
 	}
 	
 	/**
-	 * @return prints the board to console
+	 * prints the board to console
 	 */
 	public void print() {
 		int colDis = 8;
@@ -98,8 +98,12 @@ public class Board {
 	}
 	
 	/**
-	 * @param move coordinates
-	 * @return boolean horizontal path is open 
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @return true if horizontal path is clear
 	 */
 	public boolean pathH( int x1, int y1, int x2, int y2 ) {
 		// Same row, move along column - same y, different x
@@ -119,8 +123,12 @@ public class Board {
 	}
 	
 	/**
-	 * @param move coordinates
-	 * @return boolean vertical path is open 
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @return true if vertical path is clear
 	 */
 	public boolean pathV( int x1, int y1, int x2, int y2 ) {
 		// Same column, move along row - same x, different y
@@ -140,8 +148,12 @@ public class Board {
 	}
 	
 	/**
-	 * @param move coordinates
-	 * @return boolean diagonal path is open 
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @return true if diagonal path clear
 	 */
 	public boolean pathD( int x1, int y1, int x2, int y2 ) {
 		int lowerR = y1; int lowerC = x1; 
@@ -175,9 +187,16 @@ public class Board {
 		return true;
 	}
 	
+	
 	/**
-	 * @param move coordinates
-	 * @return boolean the move is valid
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @param promote promote to
+	 * @param color color of piece
+	 * @return true if move is valid
 	 */
 	public boolean valid( int x1, int y1, int x2, int y2, char promote, boolean color ) {
 
@@ -271,8 +290,12 @@ public class Board {
 	}
 
 	/**
-	 * @param move coordinates
-	 * @return makes the move
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @param c promote to
 	 */
 	public void move( int x1, int y1, int x2, int y2, char c ) {
 		Piece p = board[y1][x1];
@@ -316,8 +339,13 @@ public class Board {
 	}
 
 	/**
-	 * @param move coordinates and piece to promote to
-	 * @return boolean is the promote valid
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @param c promote to
+	 * @return true if is valid promote move
 	 */
 	public boolean validPromote( int x1, int y1, int x2, int y2, char c ) {
 		//checks if x1 y1 x2 y2 is a pawn moving to the end of the board
@@ -333,8 +361,10 @@ public class Board {
 	}
 	
 	/**
-	 * @param coordinates of piece to promote and piece to promote to
-	 * @return promotes piece
+	 * 
+	 * @param x coord
+	 * @param y coord
+	 * @param c promote to type
 	 */
 	public void promote( int x, int y, char c ) {
 		//promote piece at x y to piece c
@@ -357,10 +387,14 @@ public class Board {
 	}
 	
 	/**
-	 * @param coordinates of move
-	 * @param promote piece to promote to
-	 * @param pieceColor color of king
-	 * @return boolean does the move put the king of pieceColor in check?
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @param promote promote to
+	 * @param pieceColor piece color
+	 * @return if move puts king of pieceColor in check
 	 */
 	public boolean check( int x1, int y1, int x2, int y2, char promote, boolean pieceColor ) {
 		//check if move puts king of specified color in check
@@ -398,6 +432,11 @@ public class Board {
 		return check;
 	}
 	
+	/**
+	 * 
+	 * @param color king color
+	 * @return if king is in checkmate
+	 */
 	public boolean checkmate( boolean color ) {
 		//have to check if any piece on board can get the king out of check by killing/blocking/the king moving itself 
 		//only checkmate if there is no moves for any piece that gets the king out of check
@@ -422,8 +461,13 @@ public class Board {
 	}
 	
 	/**
-	 * @param coordinates, piece type
-	 * @return true if the move a valid Enpassant move, false otherwise
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @param type piece type
+	 * @return if move is a valid enpassant move
 	 */
 	public boolean validEnpassant(int x1, int y1, int x2, int y2, char type) {
 		//1)check if both are not pawns. 2)check if the prev move was not a double move vertical. 
@@ -460,8 +504,12 @@ public class Board {
 	
 	
 	/**
-	 * @param move coordinates
-	 * @return true if move is valid castling move, false otherwise
+	 * 
+	 * @param x1 coord
+	 * @param y1 coord
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @return if move is a valid castling move
 	 */
 	public boolean validCastling(int x1, int y1, int x2, int y2, boolean pieceColor) {
 		/*king and rook cannot move yet
@@ -531,8 +579,10 @@ public class Board {
 	}
 	
 	/**
-	 * @param coordinates
-	 * @return type of the piece at coordinate
+	 * 
+	 * @param x2 coord
+	 * @param y2 coord
+	 * @return type of piece at coord
 	 */
 	public char getType(int x2, int y2) {
 		return board[y2][x2].type;
