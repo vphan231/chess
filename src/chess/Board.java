@@ -27,9 +27,7 @@ public class Board {
 	 * sets the starting board up
 	 */
 	public void initialize() {
-		//board[0][0] = new Rook(false,"bR"); //color, name
-		//black == false; white == true
-		//create black pieces
+		
 		board[0][0] = new Rook(false,"bR"); //color, name
 		board[0][7] = new Rook(false,"bR");
 		board[0][1] = new Knight(false,"bN");
@@ -206,11 +204,15 @@ public class Board {
 		boolean output = true;
 		
 		//int math = Math.abs(x2-x1);
+		boolean h = false;
+		boolean v = false;
+		boolean d = false;
+		
 		if( p.type == 'K' && Math.abs(x2-x1) == 2 && y2 == y1){ 
 			 if( !validCastling(x1,y1,x2,y2,color) ) {
 				 return false;
 			 }
-		 }else if(  p.type == 'P' && x2 == prevX2 && Math.abs(prevY2-y2) == 1 && board[y2][x2] == null ){//isEnpassant
+		 }else if(  p.type == 'P' && Math.abs(y2-y1) == 1 && Math.abs(x2-x1) == 1  && board[y2][x2] == null ){//isEnpassant
 		 	if( !validEnpassant(x1,y1,x2,y2,type) ) {
 		 		return false;
 		 	}		 
@@ -219,10 +221,6 @@ public class Board {
 				return false;
 			}
 			
-			boolean h = false;
-			boolean v = false;
-			boolean d = false;
-		
 			int direction; //1-h, 2-v, 3-d
 			if( y1 == y2 ) {
 				h = pathH( x1, y1, x2, y2 );
@@ -234,7 +232,7 @@ public class Board {
 				d = pathD( x1, y1, x2, y2 );
 				direction = 3; 
 			}
-		
+			
 			if( type == 'B') { 
 				output = d;
 			}
@@ -503,6 +501,7 @@ public class Board {
 	 * @param y1 coord
 	 * @param x2 coord
 	 * @param y2 coord
+	 * @param pieceColor true white false black
 	 * @return if move is a valid castling move
 	 */
 	public boolean validCastling(int x1, int y1, int x2, int y2, boolean pieceColor) {
@@ -510,6 +509,9 @@ public class Board {
 		 * cannot castle while in check, through a check(example: king moves 2 spot to the left but the 1st spot it
 		 * has to get through would have made it a check.), and to a location that will cause a check(2nd spot).
 		 */
+		if( board[y1][x1].moveYet ) {
+			return false;
+		}
 		
 		if( x1 + 2 == x2 ) {
 			if( pieceColor && board[7][7] == null ) {

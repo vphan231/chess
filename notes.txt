@@ -1,3 +1,55 @@
+FOUND STUFF NOT WORKING
+
+a2 a3
+a7 a6
+a3 a4
+a6 a5 - black pawn won't go forward 1 step
+
+
+e2 e4
+a7 a6
+e4 e5
+a6 a5
+b2 b4
+f7 f5
+e5 f6
+a5 b4
+f6 f7
+e8 f7
+c1 b2
+c1 b2
+h7 h6
+d1 h5 wQ diagonal move, putting bK in check compile error
+
+	bR bN bB bQ    bB bN bR 8
+	## bp bp bp bp bK bp    7
+	   ##    ##    ##    bp 6
+	##    ##    ##    ##    5
+	   bp    ##    ##    ## 4
+	##    ##    ##    ##    3
+	wp wB wp wp    wp wp wp 2
+	wR wN ## wQ wK wB wN wR 1
+	 a  b  c  d  e  f  g  h
+
+f7 e6
+b1 c3
+
+----
+a1 b1
+h7 h6
+b1 a1
+e8 f8
+
+
+
+
+
+
+
+
+
+
+
 REMEMBER JAVADOCS!!!!!!!!!
 NAMES!!!
 

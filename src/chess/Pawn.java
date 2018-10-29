@@ -51,11 +51,11 @@ public class Pawn extends Piece{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @param row
-	 * @return true if row is pawn's starting point
+	 * @param y1 row
+	 * @return true if pawn has moved from starting row, false otherwise
 	 */
 	public boolean moveYet(int y1) {
 		if(name.equalsIgnoreCase("wp") && y1 == 6) {

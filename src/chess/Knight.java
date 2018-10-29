@@ -7,8 +7,8 @@ public class Knight extends Piece {
 	
 	/**
 	 * Knight constructor
-	 * @param boolean color: black = false and white = true
-	 * @param String name: name of the piece 
+	 * @param color: black = false and white = true
+	 * @param name: name of the piece 
 	 */
 	public Knight( boolean color, String name ) {
 		this.type = 'N';
@@ -16,12 +16,7 @@ public class Knight extends Piece {
 		this.name = name;
 	}
 	
-	/**
-	 * Checks for valid move of a Knight
-	 * @param int x1,x2,y1,y2: coordinates
-	 * @return true or false
-	 * 
-	 */
+
 	boolean validMove( int x1, int y1, int x2, int y2 ) {
 		int x = Math.abs(x2-x1);
 		int y = Math.abs(y2-y1);

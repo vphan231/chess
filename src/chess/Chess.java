@@ -5,9 +5,10 @@ import java.util.Scanner;
  * @author Cindy Lin
  * @author Vincent Phan
  */
+
 public class Chess {
 	/**
-	 * Main chess program. Creates, Initiates and Starts a chess board
+	 * @param args Main chess program. Creates, Initiates and Starts a chess board
 	 */
 	public static void main(String[] args) {
 		Board b = new Board();
@@ -16,8 +17,7 @@ public class Chess {
 	}
 	
 	/**
-	 * Runs the chess program of a given board
-	 * @param board
+	 * @param b Runs the chess program of a given board
 	 */
 	public static void start( Board b ) {
 		Scanner sc = new Scanner( System.in );
@@ -27,13 +27,19 @@ public class Chess {
 		boolean drawProposed = false;
 		boolean gameEnded = false;
 		boolean valid = true;
-		boolean check; 
+		boolean check = false; 
 		
 		while( gameEnded == false ){
+
 			if( valid == true) { //dont reprint if bad input == true
 				b.print();
 				
 				System.out.println();
+				
+				if( check == true ) {
+					System.out.println("Check");
+					System.out.println();
+				}
 				
 				if( wTurn ) {
 					System.out.print("White's turn: ");
@@ -86,10 +92,6 @@ public class Chess {
 			//System.out.println("Other team's king check: ");
 			check = b.check( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, !wTurn ); //checks if move puts other player in check
 			
-			if( check == true ) {
-				System.out.println("Check");
-				System.out.println();
-			}
 			//what if a pawn is moved then promoted to a queen that puts enemy king in check?
 			//System.out.println("Check: " + check );
 			b.move( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote);
@@ -130,9 +132,12 @@ public class Chess {
 	}
 	
 	/**
-	 * Checks if the input string is the correct format
-	 * @param board, String input, Color(black = false, white = true), drawProp: true or false if a draw is proposed
-	 * @return true or false
+	 * 
+	 * @param b board
+	 * @param str string input
+	 * @param color black false, white true
+	 * @param drawProp true or false if a draw is proposed
+	 * @return boolean input is valid
 	 */
 	public static boolean validInput( Board b, String str, boolean color, boolean drawProp ) {
 	
@@ -171,8 +176,8 @@ public class Chess {
 		return b.valid( moveCom[0], moveCom[1], moveCom[2], moveCom[3], promote, color );
 	}
 	/**
-	 * Converts values to the 2D array indexes
-	 * @param moveStr
+	 * 
+	 * @param moveStr Converts coordinates to the 2D array indexes
 	 * @return int array of converted values
 	 */
 	public static int[] convertArr( String moveStr ) {
@@ -185,8 +190,8 @@ public class Chess {
 		return coords;
 	}
 	/**
-	 * Convert input into board indexes
-	 * @param c
+	 * 
+	 * @param c Convert input into board indexes
 	 * @return int conversion of board inputs
 	 */
 	public static int convert( char c ) {
